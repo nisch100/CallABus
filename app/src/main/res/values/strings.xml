@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Call-A-Bus</string>
+    <string name="radio_default">Default (10 minutes before arrival and at arrival)</string>
+    <string name="radio_custom">Custom</string>
 </resources>

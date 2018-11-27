@@ -1,7 +1,10 @@
 package com.example.nisch100.call_a_bus;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,6 +16,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.content.Intent;
+
 
 import java.util.Calendar;
 
@@ -34,86 +39,51 @@ public class SchedulingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scheduling);
 
-        cont = (Button) findViewById(R.id.continue2);
-        cont.setOnClickListener(this);
+        dateTimePickers();
+        roundTrip();
 
 
-        /********************************
-         * Pick up location
-         */
+        // Pick-up location text field
         pickUp = (EditText) findViewById(R.id.pickup);
         pickUp.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                pickUp.getText().clear();
+                if(pickUp.getText().toString().equals("Full address of pick-up location")){
+                    pickUp.getText().clear();
+                }
             }
         });
 
-        /********************************
-         * Drop off location
-         */
+        // Drop-off location text field
         dropOff = (EditText) findViewById(R.id.dropoff);
         dropOff.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                dropOff.getText().clear();
+                if(dropOff.getText().toString().equals("Full address of drop-off location")){
+                    dropOff.getText().clear();
+                }
             }
         });
 
 
-        /********************************
-         * Continue button
-         */
-        cont = (Button) findViewById(R.id.continue2);
-        cont.setOnClickListener(this, new OnClickListener() {
+        // Cancel button
+        mCancel = (Button) findViewById(R.id.cancel);
+        mCancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                // error check for RT trip time
-                Toast.makeText(getApplicationContext(), "Hi", Toast.LENGTH_SHORT);
-                /*if(rtY.isChecked()){
-                    Toast.makeText(getApplicationContext(), "Hi", Toast.LENGTH_SHORT);
-                    if(cHour > rtHour || (cHour == rtHour && cMin > rtMin)) {
-                        // display error and don't move to next page
-                        String err = "Round trip pick up time must be after original pick up time.";
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(SchedulingActivity.this);
-                        builder.setTitle("Error")
-                                .setMessage(err)
-                                .setCancelable(true)
-                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.cancel();
-                                    }
-                                });
-                        return;
-                    } else {
-                        Intent intent = new Intent(SchedulingActivity.this, SchedulingReminders.class);
-                        intent.putExtra("yearExtra", cYear);
-                        intent.putExtra("dayExtra", cDay);
-                        intent.putExtra("monthExtra", cMonth);
-                        intent.putExtra("hourExtra", cHour);
-                        intent.putExtra("minExtra", cMin);
-                        intent.putExtra("rtHourExtra", rtHour);
-                        intent.putExtra("rtMinExtra", rtMin);
-
-
-                        startActivity(intent);
-                    }
-                }
-
-                Intent intent = new Intent(SchedulingActivity.this, SchedulingReminders.class);
-                intent.putExtra("yearExtra", cYear);
-                intent.putExtra("dayExtra", cDay);
-                intent.putExtra("monthExtra", cMonth);
-                intent.putExtra("hourExtra", cHour);
-                intent.putExtra("minExtra", cMin);
-
-                startActivity(intent);*/
-
+                promptCancel(view);
             }
         });
 
+
+        // Continue button
+        cont = (Button) findViewById(R.id.continue2);
+        cont.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToSchedReminders(view);
+            }
+        });
     }
 
     public void dateTimePickers() {
@@ -239,6 +209,81 @@ public class SchedulingActivity extends AppCompatActivity {
                 rtTimePicker.show();
             }
         });
+    }
+
+    public void goToSchedReminders(View v){
+        // error check for RT trip time
+
+        if(rtY.isChecked()){
+            Toast.makeText(v.getContext(), "in continue", Toast.LENGTH_SHORT);
+            if(cHour > rtHour || (cHour == rtHour && cMin > rtMin)) {
+                // display error and don't move to next page
+                String err = "Round trip pick up time must be after original pick up time.";
+
+                final AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(v.getContext(), android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(getApplicationContext());
+                }
+                builder.setTitle("Error")
+                        .setMessage(err)
+                        .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+                return;
+            } else {
+                Intent intent = new Intent(SchedulingActivity.this, SchedulingReminders.class);
+                intent.putExtra("yearExtra", cYear);
+                intent.putExtra("dayExtra", cDay);
+                intent.putExtra("monthExtra", cMonth);
+                intent.putExtra("hourExtra", cHour);
+                intent.putExtra("minExtra", cMin);
+                intent.putExtra("rtHourExtra", rtHour);
+                intent.putExtra("rtMinExtra", rtMin);
+
+
+                startActivity(intent);
+            }
+        }
+
+        Intent intent = new Intent(SchedulingActivity.this, SchedulingReminders.class);
+        intent.putExtra("yearExtra", cYear);
+        intent.putExtra("dayExtra", cDay);
+        intent.putExtra("monthExtra", cMonth);
+        intent.putExtra("hourExtra", cHour);
+        intent.putExtra("minExtra", cMin);
+
+        startActivity(intent);
+
+    }
+
+
+    public void promptCancel(View v) {
+        final AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(v.getContext(), android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(getApplicationContext());
+        }
+        builder.setTitle("Alert")
+                .setMessage("Are you sure you want to cancel? If you cancel, all changes will be lost.")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //go back to menu page
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
 }
