@@ -215,7 +215,6 @@ public class SchedulingActivity extends AppCompatActivity {
         // error check for RT trip time
 
         if(rtY.isChecked()){
-            Toast.makeText(v.getContext(), "in continue", Toast.LENGTH_SHORT);
             if(cHour > rtHour || (cHour == rtHour && cMin > rtMin)) {
                 // display error and don't move to next page
                 String err = "Round trip pick up time must be after original pick up time.";

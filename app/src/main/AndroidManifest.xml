@@ -21,6 +21,7 @@
         <activity android:name=".SchedulingActivity"
             android:exported="true"/>
         <activity android:name=".SchedulingReminders"/>
+        <activity android:name=".ConfirmationActivity"/>
     </application>
 
 </manifest>
