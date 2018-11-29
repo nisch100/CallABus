@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ConfirmationActivity">
+    tools:context=".ConfirmationActivity"
+    tools:layout_editor_absoluteY="81dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="435dp"
         android:layout_centerVertical="true"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="0dp"
@@ -17,66 +18,92 @@
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
-            android:layout_height="141dp"
-            android:layout_gravity="center"
+            android:layout_height="75dp"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="8dp"
+            android:paddingTop="10dp"
             android:text="Bus Scheduling Confirmed!"
-            android:textAppearance="@android:style/TextAppearance.Material.Display2" />
+            android:textAppearance="@android:style/TextAppearance.Material.Display2"
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
-            android:layout_height="41dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:text="Date: November 18, 2018"
             android:textAppearance="@android:style/TextAppearance.Widget.TextView" />
 
         <TextView
-            android:layout_gravity="center"
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:text="Time: 4:30pm"
-            android:textAppearance="@android:style/TextAppearance.Widget.TextView"/>
+            android:textAppearance="@android:style/TextAppearance.Widget.TextView" />
 
         <TextView
-            android:layout_gravity="center"
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
-            android:layout_height="42dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:text="Pickup Location: Senior Center"
-            android:textAppearance="@android:style/TextAppearance.Widget.TextView"/>
+            android:textAppearance="@android:style/TextAppearance.Widget.TextView" />
 
         <TextView
-            android:layout_gravity="center"
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
-            android:layout_height="49dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:text="Dropoff Location: Mall"
-            android:textAppearance="@android:style/TextAppearance.Widget.TextView"/>
+            android:textAppearance="@android:style/TextAppearance.Widget.TextView" />
+
 
         <TextView
-            android:layout_gravity="center"
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:text="Default Reminders: 5 min before"
-            android:textAppearance="@android:style/TextAppearance.Widget.TextView"/>
+            android:textAppearance="@android:style/TextAppearance.Widget.TextView" />
 
         <TextView
-            android:layout_gravity="center"
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
-            android:layout_height="65dp"
-            android:text="Relative Reminders: Robert(Son), Christine(Niece)"
-            android:textAppearance="@android:style/TextAppearance.Widget.TextView"/>
-
-        <Button
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:id="@+id/Button1"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="Relative Reminders: Robert(Son), Christine(Niece)"
+            android:textAppearance="@android:style/TextAppearance.Widget.TextView" />
+
+        <TextView
+            android:id="@+id/rtDisplay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Next"
-            android:textAppearance="@android:style/TextAppearance.Widget.TextView"/>
+            android:layout_gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="Round Trip Pick-up Time: 5:30PM"
+            android:textAppearance="@android:style/TextAppearance.Widget.TextView" />
+
+        <Button
+            android:id="@+id/done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Done"
+            android:textAppearance="@android:style/TextAppearance.Widget.TextView" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

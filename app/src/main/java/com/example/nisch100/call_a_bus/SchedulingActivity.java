@@ -33,6 +33,7 @@ public class SchedulingActivity extends AppCompatActivity {
 
     RadioGroup rtGroup;
     RadioButton rtY, rtN;
+    Boolean roundtrip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +116,7 @@ public class SchedulingActivity extends AppCompatActivity {
 
                             }
                         }, mYear, mMonth, mDay);
+                datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
                 datePickerDialog.show();
             }
         });
@@ -148,7 +150,12 @@ public class SchedulingActivity extends AppCompatActivity {
                         } else {
                             AM_PM = "AM";
                         }
-                        time.setText(selectedHour + ":" + selectedMinute + AM_PM);
+
+                        if(selectedMinute < 10){
+                            time.setText(selectedHour + ":0" + selectedMinute + AM_PM);
+                        } else {
+                            time.setText(selectedHour + ":" + selectedMinute + AM_PM);
+                        }
                     }
                 }, hour, minute, false);
                 mTimePicker.setTitle("Select Time");
@@ -202,7 +209,12 @@ public class SchedulingActivity extends AppCompatActivity {
                         } else {
                             AM_PM = "AM";
                         }
-                        rtTimeButton.setText("Return trip at " + selectedHour + ":" + selectedMinute + AM_PM);
+
+                        if(selectedMinute < 10){
+                            rtTimeButton.setText(selectedHour + ":0" + selectedMinute + AM_PM);
+                        } else {
+                            rtTimeButton.setText(selectedHour + ":" + selectedMinute + AM_PM);
+                        }
                     }
                 }, hour, minute, false);
                 rtTimePicker.setTitle("Select Return Trip Time");
@@ -212,28 +224,23 @@ public class SchedulingActivity extends AppCompatActivity {
     }
 
     public void goToSchedReminders(View v){
+        String pickupLocation = pickUp.getText().toString().trim();
+        String dropoffLocation = dropOff.getText().toString().trim();
+
+        if(!errorCheck()){
+            errorAllFields(v);
+            return;
+        }
+
+        if(pickupLocation.equals(dropoffLocation)){
+            errorLocations(v);
+            return;
+        }
+
         // error check for RT trip time
-
         if(rtY.isChecked()){
-            if(cHour > rtHour || (cHour == rtHour && cMin > rtMin)) {
-                // display error and don't move to next page
-                String err = "Round trip pick up time must be after original pick up time.";
-
-                final AlertDialog.Builder builder;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder = new AlertDialog.Builder(v.getContext(), android.R.style.Theme_Material_Dialog_Alert);
-                } else {
-                    builder = new AlertDialog.Builder(getApplicationContext());
-                }
-                builder.setTitle("Error")
-                        .setMessage(err)
-                        .setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
+            if(cHour > rtHour || (cHour == rtHour && cMin >= rtMin)) {
+                errorTime(v);
                 return;
             } else {
                 Intent intent = new Intent(SchedulingActivity.this, SchedulingReminders.class);
@@ -244,23 +251,53 @@ public class SchedulingActivity extends AppCompatActivity {
                 intent.putExtra("minExtra", cMin);
                 intent.putExtra("rtHourExtra", rtHour);
                 intent.putExtra("rtMinExtra", rtMin);
-
+                intent.putExtra("pickDest", pickupLocation);
+                intent.putExtra("dropDest", dropoffLocation);
+                intent.putExtra("roundtrip?", true);
 
                 startActivity(intent);
             }
+        } else {
+            Intent intent = new Intent(SchedulingActivity.this, SchedulingReminders.class);
+            intent.putExtra("yearExtra", cYear);
+            intent.putExtra("dayExtra", cDay);
+            intent.putExtra("monthExtra", cMonth);
+            intent.putExtra("hourExtra", cHour);
+            intent.putExtra("minExtra", cMin);
+            intent.putExtra("rtHourExtra", -1);
+            intent.putExtra("rtMinExtra", -1);
+            intent.putExtra("pickDest", pickupLocation);
+            intent.putExtra("dropDest", dropoffLocation);
+            intent.putExtra("roundtrip?", false);
+
+            startActivity(intent);
         }
-
-        Intent intent = new Intent(SchedulingActivity.this, SchedulingReminders.class);
-        intent.putExtra("yearExtra", cYear);
-        intent.putExtra("dayExtra", cDay);
-        intent.putExtra("monthExtra", cMonth);
-        intent.putExtra("hourExtra", cHour);
-        intent.putExtra("minExtra", cMin);
-
-        startActivity(intent);
 
     }
 
+    public boolean errorCheck(){
+        if(!rtY.isChecked() && !rtN.isChecked()){
+            return false;
+        }
+
+        if(date.getText().toString().equals("Select Date...")){
+            return false;
+        }
+
+        if(time.getText().toString().equals("Select Time...")){
+            return false;
+        }
+
+        if(pickUp.getText().toString().equals("") || pickUp.getText().toString().equals("Full address of pick-up location")){
+            return false;
+        }
+
+        if(dropOff.getText().toString().equals("") || dropOff.getText().toString().equals("Full address of drop-off location")){
+            return false;
+        }
+
+        return true;
+    }
 
     public void promptCancel(View v) {
         final AlertDialog.Builder builder;
@@ -283,6 +320,70 @@ public class SchedulingActivity extends AppCompatActivity {
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    public void errorAllFields(View v) {
+        String err = "Please fill out all fields.";
+        final AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(v.getContext(), android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(getApplicationContext());
+        }
+        builder.setTitle("Error")
+                .setMessage(err)
+                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+        return;
+    }
+
+    public void errorTime(View v){
+        // display error and don't move to next page
+        String err = "Round trip pick up time must be after original pick up time.";
+
+        final AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(v.getContext(), android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(getApplicationContext());
+        }
+        builder.setTitle("Error")
+                .setMessage(err)
+                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+        return;
+    }
+
+    public void errorLocations(View v){
+        // display error and don't move to next page
+        String err = "Pick-up location and Drop-off location cannot be the same.";
+
+        final AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(v.getContext(), android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(getApplicationContext());
+        }
+        builder.setTitle("Error")
+                .setMessage(err)
+                .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+        return;
     }
 
 }

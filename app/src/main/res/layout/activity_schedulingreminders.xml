@@ -47,73 +47,84 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <RadioGroup
-        android:id="@+id/radioReminder"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/add"
-        app:layout_constraintStart_toStartOf="@+id/setReminders"
-        app:layout_constraintTop_toBottomOf="@+id/setReminders">
-
-        <RadioButton
-            android:id="@+id/reminderDefault"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Default (10 minutes before arrival and at arrival)" />
-
-        <RadioButton
-            android:id="@+id/reminderCustom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Custom" />
-
-    </RadioGroup>
-
-    <TextView
-        android:id="@+id/add"
+    <CheckBox
+        android:id="@+id/min10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
-        android:layout_marginEnd="43dp"
-        android:layout_marginLeft="43dp"
-        android:layout_marginRight="43dp"
-        android:layout_marginStart="43dp"
-        android:clickable="true"
-        android:text="Add"
-        android:textColor="#33D4FF"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
-        app:layout_constraintEnd_toEndOf="@+id/setReminders"
-        app:layout_constraintStart_toStartOf="@+id/relative1" />
+        android:text="10 minutes before bus arrival"
+        app:layout_constraintStart_toStartOf="@+id/atArrival"
+        app:layout_constraintTop_toBottomOf="@+id/setReminders" />
 
-    <TextView
-        android:id="@+id/textView3"
+    <CheckBox
+        android:id="@+id/atArrival"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="194dp"
+        android:text="When bus arrives"
+        app:layout_constraintEnd_toEndOf="@+id/other"
+        app:layout_constraintStart_toEndOf="@+id/other"
+        app:layout_constraintTop_toBottomOf="@+id/min10" />
+
+    <CheckBox
+        android:id="@+id/other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Other:"
+        app:layout_constraintEnd_toStartOf="@+id/minOther"
+        app:layout_constraintTop_toBottomOf="@+id/atArrival" />
+
+    <EditText
+        android:id="@+id/minOther"
+        android:layout_width="41dp"
+        android:layout_height="46dp"
+        android:layout_marginBottom="37dp"
+        android:layout_marginTop="32dp"
+        android:inputType="number"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/relativePrompt"
+        app:layout_constraintEnd_toEndOf="@+id/relative1"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toEndOf="@+id/relative1"
+        app:layout_constraintTop_toTopOf="@+id/atArrival"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginBottom="72dp"
+        android:layout_marginTop="72dp"
+        android:text="minutes before bus arrival"
+        app:layout_constraintBottom_toTopOf="@+id/relative2"
+        app:layout_constraintStart_toEndOf="@+id/minOther"
+        app:layout_constraintTop_toTopOf="@+id/min10" />
+
+
+    <TextView
+        android:id="@+id/relativePrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:text="Choose relatives to be notified:"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/textView9"
+        app:layout_constraintStart_toStartOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/other" />
 
     <CheckBox
         android:id="@+id/relative1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginStart="25dp"
+        android:layout_marginLeft="41dp"
+        android:layout_marginStart="41dp"
         android:text="Relative1"
-        app:layout_constraintStart_toStartOf="@+id/textView3"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativePrompt" />
 
     <CheckBox
         android:id="@+id/relative2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
         android:text="Relative2"
         app:layout_constraintStart_toStartOf="@+id/relative1"
         app:layout_constraintTop_toBottomOf="@+id/relative1" />
