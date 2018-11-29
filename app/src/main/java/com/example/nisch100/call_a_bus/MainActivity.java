@@ -85,8 +85,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void registerUser(){
 
         //getting email and password from edit texts
-        String email = editTextEmail.getText().toString().trim();
-        String password  = editTextPassword.getText().toString().trim();
+        final String email = editTextEmail.getText().toString().trim();
+        final String password  = editTextPassword.getText().toString().trim();
         String name = editTextName.getText().toString().trim();
         String number = editPhone.getText().toString().trim();
         String confirmPassword = editConfirmPassword.getText().toString().trim();

@@ -26,7 +26,7 @@
         <activity
             android:name=".YourBusesActivity"
             android:label="@string/your_buses_title"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SchedulingActivity"
             android:exported="true"/>
         <activity android:name=".SchedulingReminders"/>
