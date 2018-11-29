@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "62924298524-nn6rhoejnmhs9r14qoqqv7o9cgd36c8j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nisch100.call_a_bus",
+            "certificate_hash": "20e1eeea93d7ebb33de716c539f27a368e2740b3"
+          }
+        },
+        {
           "client_id": "62924298524-sip1auglrncan6a3ij9ds4s9nfhnj1lu.apps.googleusercontent.com",
           "client_type": 3
         }

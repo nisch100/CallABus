@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Call-A-Bus</string>
+    <string name="your_buses_title">Your Buses</string>
+    <string name="reminder_settings_title">Reminder Settings</string>
+    <string name="title_activity_your_buses">YourBusesActivity</string>
+    <string name="tab_text_1">Past</string>
+    <string name="tab_text_2">Upcoming</string>
 
     <string name="radio_default">Default (10 minutes before arrival and at arrival)</string>
     <string name="radio_custom">Custom</string>

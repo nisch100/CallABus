@@ -23,6 +23,10 @@
         </activity>
         <activity android:name=".Profile" />
         <activity android:name=".Login" />
+        <activity
+            android:name=".YourBusesActivity"
+            android:label="@string/your_buses_title"
+            android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".SchedulingActivity"
             android:exported="true"/>
         <activity android:name=".SchedulingReminders"/>
@@ -56,5 +60,7 @@
             </intent-filter>
         </activity>
     </application>
+
+
 
 </manifest>
