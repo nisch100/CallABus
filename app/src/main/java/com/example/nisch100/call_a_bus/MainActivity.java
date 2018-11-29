@@ -85,8 +85,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void registerUser(){
 
         //getting email and password from edit texts
-        String email = editTextEmail.getText().toString().trim();
-        String password  = editTextPassword.getText().toString().trim();
+        final String email = editTextEmail.getText().toString().trim();
+        final String password  = editTextPassword.getText().toString().trim();
         String name = editTextName.getText().toString().trim();
         String number = editPhone.getText().toString().trim();
         String confirmPassword = editConfirmPassword.getText().toString().trim();
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this,"Passwords don't match",Toast.LENGTH_LONG).show();
             return;
         }
-        saveUserInfo();
+
         //if the email and password are not empty
         //displaying a progress dialog
 
@@ -135,6 +135,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         //checking if success
                         if(task.isSuccessful()){
+                            firebaseAuth.signInWithEmailAndPassword(email, password);
+                            saveUserInfo();
+
                             finish();
                             startActivity(new Intent(getApplicationContext(), Profile.class));
                         }else{
@@ -157,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
         //databaseReference.child(user.getUid()).setValue(obj);
-        databaseReference.child(id).setValue(obj);
+        databaseReference.child(email).setValue(obj);
 
         Toast.makeText(this,"RegisterInfo is saved",Toast.LENGTH_LONG).show();
     }
@@ -173,6 +176,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //open login activity when user taps on the already registered textview
             startActivity(new Intent(this, Login.class));
         }
+
+        /*
+        Intent intent = new Intent(getApplicationContext(), AccountInfo.class);
+        startActivity(intent);
+        */
 
     }
 }

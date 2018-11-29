@@ -60,6 +60,10 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         //displaying logged in user name
         textViewUserEmail.setText("Welcome "+user.getUid());
 
+        //textViewUserEmail.setText("Welcome "+ user.);
+
+        textViewUserEmail.setText("Welcome "+user.getDisplayName());
+
         //adding listener to button
         buttonLogout.setOnClickListener(this);
         buttonsave.setOnClickListener(this);
