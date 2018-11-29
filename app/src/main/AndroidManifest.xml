@@ -23,6 +23,10 @@
         </activity>
         <activity android:name=".Profile" />
         <activity android:name=".Login" />
+        <activity android:name=".SchedulingActivity"
+            android:exported="true"/>
+        <activity android:name=".SchedulingReminders"/>
+        <activity android:name=".ConfirmationActivity"/>
         <activity
             android:name=".AccountInfo"
             android:label="@string/title_activity_account_info">
