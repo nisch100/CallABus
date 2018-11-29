@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SchedulingReminders"
+    tools:layout_editor_absoluteY="81dp">
+
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="0dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="18dp"
+        android:layout_marginEnd="69dp"
+        android:layout_marginLeft="69dp"
+        android:layout_marginRight="69dp"
+        android:layout_marginStart="69dp"
+        android:layout_marginTop="16dp"
+        android:background="@null"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:ems="10"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:inputType="text"
+        android:text="Schedule a Bus"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/setReminders"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/setReminders"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="77dp"
+        android:text="Set Reminders:"
+        android:textAlignment="viewStart"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/min10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10 minutes before bus arrival"
+        app:layout_constraintStart_toStartOf="@+id/atArrival"
+        app:layout_constraintTop_toBottomOf="@+id/setReminders" />
+
+    <CheckBox
+        android:id="@+id/atArrival"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="When bus arrives"
+        app:layout_constraintEnd_toEndOf="@+id/other"
+        app:layout_constraintStart_toEndOf="@+id/other"
+        app:layout_constraintTop_toBottomOf="@+id/min10" />
+
+    <CheckBox
+        android:id="@+id/other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Other:"
+        app:layout_constraintEnd_toStartOf="@+id/minOther"
+        app:layout_constraintTop_toBottomOf="@+id/atArrival" />
+
+    <EditText
+        android:id="@+id/minOther"
+        android:layout_width="41dp"
+        android:layout_height="46dp"
+        android:layout_marginBottom="37dp"
+        android:layout_marginTop="32dp"
+        android:inputType="number"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/relativePrompt"
+        app:layout_constraintEnd_toEndOf="@+id/relative1"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toEndOf="@+id/relative1"
+        app:layout_constraintTop_toTopOf="@+id/atArrival"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginBottom="72dp"
+        android:layout_marginTop="72dp"
+        android:text="minutes before bus arrival"
+        app:layout_constraintBottom_toTopOf="@+id/relative2"
+        app:layout_constraintStart_toEndOf="@+id/minOther"
+        app:layout_constraintTop_toTopOf="@+id/min10" />
+
+
+    <TextView
+        android:id="@+id/relativePrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Choose relatives to be notified:"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/textView9"
+        app:layout_constraintStart_toStartOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/other" />
+
+    <CheckBox
+        android:id="@+id/relative1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="41dp"
+        android:layout_marginStart="41dp"
+        android:text="Relative1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativePrompt" />
+
+    <CheckBox
+        android:id="@+id/relative2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="Relative2"
+        app:layout_constraintStart_toStartOf="@+id/relative1"
+        app:layout_constraintTop_toBottomOf="@+id/relative1" />
+
+    <CheckBox
+        android:id="@+id/relative3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Relative3"
+        app:layout_constraintStart_toStartOf="@+id/relative2"
+        app:layout_constraintTop_toBottomOf="@+id/relative2" />
+
+    <Button
+        android:id="@+id/finishSched"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="#25A642"
+        android:text="Finish"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#E7280E"
+        android:text="Cancel"
+        app:layout_constraintBaseline_toBaselineOf="@+id/finishSched"
+        app:layout_constraintEnd_toStartOf="@+id/finishSched" />
+
+
+</android.support.constraint.ConstraintLayout>
