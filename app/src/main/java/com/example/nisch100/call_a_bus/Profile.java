@@ -56,8 +56,9 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         buttonsave = (Button) findViewById(R.id.buttonAdd);
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
 
+
         //displaying logged in user name
-        textViewUserEmail.setText("Welcome "+user.);
+        textViewUserEmail.setText("Welcome "+user.getUid());
 
         //adding listener to button
         buttonLogout.setOnClickListener(this);
@@ -72,7 +73,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
         //databaseReference.child(user.getUid()).setValue(obj);
-        databaseReference.child(id).setValue(obj);
+        databaseReference.child("users").child(id).setValue(obj);
 
         Toast.makeText(this,"Info is saved",Toast.LENGTH_LONG).show();
     }
