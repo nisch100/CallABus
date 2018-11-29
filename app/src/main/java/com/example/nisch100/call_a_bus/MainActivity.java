@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this,"Passwords don't match",Toast.LENGTH_LONG).show();
             return;
         }
-        saveUserInfo();
+
         //if the email and password are not empty
         //displaying a progress dialog
 
@@ -135,6 +135,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         //checking if success
                         if(task.isSuccessful()){
+                            firebaseAuth.signInWithEmailAndPassword(email, password);
+                            saveUserInfo();
+
                             finish();
                             startActivity(new Intent(getApplicationContext(), Profile.class));
                         }else{
@@ -157,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
         //databaseReference.child(user.getUid()).setValue(obj);
-        databaseReference.child(id).setValue(obj);
+        databaseReference.child(email).setValue(obj);
 
         Toast.makeText(this,"REgisterInfo is saved",Toast.LENGTH_LONG).show();
     }

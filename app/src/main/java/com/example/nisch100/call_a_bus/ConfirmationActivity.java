@@ -11,7 +11,12 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConfirmationActivity extends AppCompatActivity {
 
@@ -28,6 +33,9 @@ public class ConfirmationActivity extends AppCompatActivity {
 
     Bus busToSchedule;
 
+    FirebaseDatabase database;
+    DatabaseReference databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +51,10 @@ public class ConfirmationActivity extends AppCompatActivity {
         doneButton = (Button) findViewById(R.id.done);
 
         busToSchedule = initializeBus();
-        //addToDatabase();
+
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference();
+        addToDatabase(busToSchedule);
         printInfo();
 /*
         doneButton.setOnClickListener(new View.OnClickListener() {
@@ -109,15 +120,18 @@ public class ConfirmationActivity extends AppCompatActivity {
         return scheduledBus;
     }
 
-    /*
-    private void addToDatabase() {
 
+    private void addToDatabase(Bus bus) {
+        Map<String, Object> busScheduler = new HashMap<String, Object>();
+        busScheduler.put("Scheduled Buses", bus);
+
+        databaseReference.child("users");
     }
 
     public void goToHome(View view){
         //Intent goHome =
     }
-*/
+
     public void printInfo(){
 
         int month = busToSchedule.getMonth();

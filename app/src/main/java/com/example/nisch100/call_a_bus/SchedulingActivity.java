@@ -227,11 +227,13 @@ public class SchedulingActivity extends AppCompatActivity {
         String pickupLocation = pickUp.getText().toString().trim();
         String dropoffLocation = dropOff.getText().toString().trim();
 
+        //check all fields filled out
         if(!errorCheck()){
             errorAllFields(v);
             return;
         }
 
+        //check locations aren't the same
         if(pickupLocation.equals(dropoffLocation)){
             errorLocations(v);
             return;

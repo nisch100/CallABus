@@ -13,6 +13,10 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
@@ -29,6 +33,10 @@ public class SchedulingReminders extends AppCompatActivity {
 
     ArrayList<String> mRelatives = new ArrayList<String>();
     ArrayList<Integer> mReminders = new ArrayList<Integer>();
+
+    FirebaseDatabase database;
+    DatabaseReference databaseReference;
+
 
 
     @Override
@@ -55,6 +63,9 @@ public class SchedulingReminders extends AppCompatActivity {
 
         amount = (EditText) findViewById(R.id.minOther);
 
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference();
+        Toast.makeText(getApplicationContext(), databaseReference.push().getKey().toString(), Toast.LENGTH_LONG).show();
 
         finishButton = (Button) findViewById(R.id.finishSched);
         canButton = (Button) findViewById(R.id.cancelButton);
