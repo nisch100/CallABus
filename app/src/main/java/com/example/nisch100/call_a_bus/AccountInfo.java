@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -57,6 +59,7 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
+    private static final String TAG = "error_msg";
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -75,6 +78,7 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
     // Database references
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +96,19 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        user = firebaseAuth.getCurrentUser();
+
+        if (user != null) {
+            // User is signed in
+            Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+        } else {
+            // User is signed out
+            Log.d(TAG, "onAuthStateChanged:signed_out");
+        }
+
+
+
+        // myRef.child(userID).child("which field do you want to update").setValue(ValueVariable);
 
         // listener is not needed since no need to check login authentication status
         /*
@@ -126,6 +143,16 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
     private void saveInfo(){
         // save account information to firebase
         // TODO
+        String mName = mNameView.getText().toString();
+        String mAge = mAgeView.getText().toString();
+        String mPhone = mPhoneView.getText().toString();
+        String mAddress = mAddressView.getText().toString();
+
+        DatabaseReference mUser = databaseReference.child(user.getUid());
+        mUser.child("name").setValue(mName);
+        mUser.child("age").setValue(mAge);
+        mUser.child("phone").setValue(mPhone);
+        mUser.child("address").setValue(mAddress);
 
         // toast a message "personal information is updated"
         Toast toast = Toast.makeText(getApplicationContext(), "personal information is updated", Toast.LENGTH_SHORT);

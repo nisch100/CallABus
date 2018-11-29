@@ -174,5 +174,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(this, Login.class));
         }
 
+        /*
+        Intent intent = new Intent(getApplicationContext(), AccountInfo.class);
+        startActivity(intent);
+        */
+
     }
 }
