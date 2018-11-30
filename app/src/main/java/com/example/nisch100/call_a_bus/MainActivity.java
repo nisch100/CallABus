@@ -34,8 +34,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textViewSignin;
     private DatabaseReference databaseReference;
 
+    String email;
+    String password;
+    String confirmPassword;
+    String name;
+    String number;
+    String id;
 
-    private ProgressDialog progressDialog;
+    ProgressDialog progressDialog;
 
 
     //defining firebaseauth object
@@ -56,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             finish();
 
             //and open profile activity
-            startActivity(new Intent(getApplicationContext(), Profile.class));
+            startActivity(new Intent(getApplicationContext(), MainMenu.class));
         }
         databaseReference = FirebaseDatabase.getInstance().getReference();
         //getting current user
@@ -85,11 +91,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void registerUser(){
 
         //getting email and password from edit texts
-        final String email = editTextEmail.getText().toString().trim();
-        final String password  = editTextPassword.getText().toString().trim();
-        String name = editTextName.getText().toString().trim();
-        String number = editPhone.getText().toString().trim();
-        String confirmPassword = editConfirmPassword.getText().toString().trim();
+        email = editTextEmail.getText().toString().trim();
+        password  = editTextPassword.getText().toString().trim();
+        name = editTextName.getText().toString().trim();
+        number = editPhone.getText().toString().trim();
+        confirmPassword = editConfirmPassword.getText().toString().trim();
 
         //checking if email and passwords are empty
         if(TextUtils.isEmpty(email)){
@@ -135,11 +141,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         //checking if success
                         if(task.isSuccessful()){
+                            saveUserInfo(task.getResult().getUser().getUid());
                             firebaseAuth.signInWithEmailAndPassword(email, password);
-                            saveUserInfo();
-
+                            //firebaseAuth.signOut();
                             finish();
-                            startActivity(new Intent(getApplicationContext(), Profile.class));
+                            startActivity(new Intent(getApplicationContext(), MainMenu.class));
                         }else{
                             //display some message here
                             Toast.makeText(MainActivity.this,"Registration Error",Toast.LENGTH_LONG).show();
@@ -150,17 +156,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void saveUserInfo(){
-        String email = editTextEmail.getText().toString().trim();
-        String password  = editTextPassword.getText().toString().trim();
-        String name = editTextName.getText().toString().trim();
-        String number = editPhone.getText().toString().trim();
-        String id = databaseReference.push().getKey();
+    private void saveUserInfo(String uid){
         Registerfirebase obj = new Registerfirebase(name,email,number,password);
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
         //databaseReference.child(user.getUid()).setValue(obj);
-        databaseReference.child(email).setValue(obj);
+        databaseReference.child("users").child(uid).setValue(obj);
 
         Toast.makeText(this,"RegisterInfo is saved",Toast.LENGTH_LONG).show();
     }

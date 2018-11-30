@@ -56,14 +56,14 @@ public class ConfirmationActivity extends AppCompatActivity {
         databaseReference = database.getReference();
         addToDatabase(busToSchedule);
         printInfo();
-/*
+
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 goToHome(view);
             }
         });
-*/
+
 
     }
 
@@ -129,7 +129,7 @@ public class ConfirmationActivity extends AppCompatActivity {
     }
 
     public void goToHome(View view){
-        //Intent goHome =
+        startActivity(new Intent(view.getContext(), MainMenu.class));
     }
 
     public void printInfo(){
