@@ -39,9 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:hint="Enter Number"
-            android:inputType="number" />
-
-
+            android:inputType="phone" />
 
         <EditText
             android:id="@+id/editTextEmail"
@@ -69,11 +67,11 @@
 
 
         <Button
-            android:id="@+id/buttonSignup"
+            android:id="@+id/buttonNext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="Signup" />
+            android:text="Next" />
 
         <TextView
             android:text="Already Registered? Signin Here"
