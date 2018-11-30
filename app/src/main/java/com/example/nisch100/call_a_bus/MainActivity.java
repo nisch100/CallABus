@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             finish();
 
             //and open profile activity
-            startActivity(new Intent(getApplicationContext(), Profile.class));
+            startActivity(new Intent(getApplicationContext(), MainMenu.class));
         }
         databaseReference = FirebaseDatabase.getInstance().getReference();
         //getting current user
@@ -143,9 +143,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if(task.isSuccessful()){
                             saveUserInfo(task.getResult().getUser().getUid());
                             firebaseAuth.signInWithEmailAndPassword(email, password);
-                            firebaseAuth.signOut();
+                            //firebaseAuth.signOut();
                             finish();
-                            startActivity(new Intent(getApplicationContext(), Profile.class));
+                            startActivity(new Intent(getApplicationContext(), MainMenu.class));
                         }else{
                             //display some message here
                             Toast.makeText(MainActivity.this,"Registration Error",Toast.LENGTH_LONG).show();
