@@ -2,6 +2,8 @@ package com.example.nisch100.call_a_bus;
 
 import android.content.Intent;
 import android.opengl.Visibility;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -11,8 +13,14 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,8 +41,12 @@ public class ConfirmationActivity extends AppCompatActivity {
 
     Bus busToSchedule;
 
+    FirebaseAuth myAuth;
     FirebaseDatabase database;
     DatabaseReference databaseReference;
+    Registerfirebase userObj;
+    String uid;
+    int numBuses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +63,31 @@ public class ConfirmationActivity extends AppCompatActivity {
         doneButton = (Button) findViewById(R.id.done);
 
         busToSchedule = initializeBus();
+        printInfo();
 
+        myAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
+        uid = myAuth.getCurrentUser().getUid();
+
+
+        databaseReference.child("users").child(uid).child("numBuses").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                numBuses = dataSnapshot.getValue(Integer.class);
+                databaseReference.child("users").child(uid).child("numBuses").setValue(numBuses+1);
+
+                // initiateUserObj(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         addToDatabase(busToSchedule);
-        printInfo();
+
 
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +95,6 @@ public class ConfirmationActivity extends AppCompatActivity {
                 goToHome(view);
             }
         });
-
 
     }
 
@@ -121,11 +152,32 @@ public class ConfirmationActivity extends AppCompatActivity {
     }
 
 
-    private void addToDatabase(Bus bus) {
-        Map<String, Object> busScheduler = new HashMap<String, Object>();
-        busScheduler.put("Scheduled Buses", bus);
+    public void addToDatabase(Bus bus) {
+        //Toast.makeText(getApplicationContext(), numBuses, Toast.LENGTH_LONG);
 
-        databaseReference.child("users");
+
+        databaseReference.child("buses").child(uid).child("bus" + numBuses).setValue(bus);
+
+        //updates user in database
+//        userObj.setNumBuses(userObj.getNumBuses() + 1);
+//        databaseReference.child("users").child(uid).setValue(userObj);
+    }
+
+    public void initiateUserObj(DataSnapshot snapshot){
+        for(DataSnapshot ds : snapshot.getChildren()){
+            if(ds.getValue().equals("users")){
+                for(DataSnapshot snap : ds.getChildren()){
+                    if(snap.getValue().equals(uid)){
+                        userObj = new Registerfirebase();
+                        userObj.setName(snap.child(uid).getValue(Registerfirebase.class).getName());
+                        userObj.setEmail(snap.child(uid).getValue(Registerfirebase.class).getEmail());
+                        userObj.setPassword(snap.child(uid).getValue(Registerfirebase.class).getPassword());
+                        userObj.setPhone(snap.child(uid).getValue(Registerfirebase.class).getPhone());
+                        userObj.setNumBuses(snap.child(uid).getValue(Registerfirebase.class).getNumBuses());
+                    }
+                }
+            }
+        }
     }
 
     public void goToHome(View view){
