@@ -64,9 +64,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //and open profile activity
             startActivity(new Intent(getApplicationContext(), MainMenu.class));
         }
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        //getting current user
-        FirebaseUser user = firebaseAuth.getCurrentUser();
 
 
         //initializing views
@@ -79,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editPhone = (EditText) findViewById(R.id.editPhone);
 
 
-        buttonSignup = (Button) findViewById(R.id.buttonSignup);
+        buttonSignup = (Button) findViewById(R.id.buttonNext);
 
         progressDialog = new ProgressDialog(this);
 
@@ -128,31 +125,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        //if the email and password are not empty
-        //displaying a progress dialog
-
-        progressDialog.setMessage("Registering Please Wait...");
-        progressDialog.show();
-
-        //creating a new user
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        //checking if success
-                        if(task.isSuccessful()){
-                            saveUserInfo(task.getResult().getUser().getUid());
-                            firebaseAuth.signInWithEmailAndPassword(email, password);
-                            //firebaseAuth.signOut();
-                            finish();
-                            startActivity(new Intent(getApplicationContext(), MainMenu.class));
-                        }else{
-                            //display some message here
-                            Toast.makeText(MainActivity.this,"Registration Error",Toast.LENGTH_LONG).show();
-                        }
-                        progressDialog.dismiss();
-                    }
-                });
+        Intent i = new Intent(this, AddRelatives.class);
+        i.putExtra("email", email);
+        i.putExtra("name", name);
+        i.putExtra("number", number);
+        i.putExtra("password", password);
+        startActivity(i);
 
     }
 
@@ -177,11 +155,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //open login activity when user taps on the already registered textview
             startActivity(new Intent(this, Login.class));
         }
-
-        /*
-        Intent intent = new Intent(getApplicationContext(), AccountInfo.class);
-        startActivity(intent);
-        */
 
     }
 }
