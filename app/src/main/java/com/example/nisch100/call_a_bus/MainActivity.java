@@ -134,16 +134,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void saveUserInfo(String uid){
-        Registerfirebase obj = new Registerfirebase(name,email,number,password);
-
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        //databaseReference.child(user.getUid()).setValue(obj);
-        databaseReference.child("users").child(uid).setValue(obj);
-
-        Toast.makeText(this,"You are now registered!",Toast.LENGTH_LONG).show();
-    }
-
     @Override
     public void onClick(View view) {
 
