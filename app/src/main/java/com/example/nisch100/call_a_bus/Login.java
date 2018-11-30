@@ -97,7 +97,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                         if(task.isSuccessful()){
                             //start the profile activity
                             finish();
-                            startActivity(new Intent(getApplicationContext(), Profile.class));
+                            startActivity(new Intent(getApplicationContext(), MainMenu.class));
                         }
                     }
                 });
