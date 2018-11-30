@@ -11,16 +11,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 
 public class MainMenu extends AppCompatActivity {
 
     private Button schedule, myBuses, account, logoutButton;
+
+    FirebaseAuth myAuth;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+
+        myAuth = FirebaseAuth.getInstance();
 
 
         schedule = findViewById(R.id.schedule_button);
@@ -46,6 +52,17 @@ public class MainMenu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(view.getContext(), RelativesInfo.class));
+            }
+        });
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myAuth.signOut();
+                //closing activity
+                finish();
+                //starting login activity
+                startActivity(new Intent(view.getContext(), Login.class));
             }
         });
 

@@ -65,7 +65,6 @@ public class SchedulingReminders extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
-        Toast.makeText(getApplicationContext(), databaseReference.push().getKey().toString(), Toast.LENGTH_LONG).show();
 
         finishButton = (Button) findViewById(R.id.finishSched);
         canButton = (Button) findViewById(R.id.cancelButton);
@@ -97,7 +96,7 @@ public class SchedulingReminders extends AppCompatActivity {
                 .setMessage("Are you sure you want to cancel? If you cancel, all changes will be lost.")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
+                        startActivity(new Intent(getApplicationContext(), MainMenu.class));
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -170,7 +169,11 @@ public class SchedulingReminders extends AppCompatActivity {
                     .show();
             return;
         }
-        reminderTime = Integer.parseInt(otherTime);
+
+        if(!otherTime.equals("")){
+            reminderTime = Integer.parseInt(otherTime);
+        }
+
         //check to make sure "Other" checkbox is accounted for (either removed or added)
         for(int i = 0; i < mReminders.size(); i++){
             if(mReminders.get(i) != 10 && mReminders.get(i) != 0){

@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //databaseReference.child(user.getUid()).setValue(obj);
         databaseReference.child("users").child(uid).setValue(obj);
 
-        Toast.makeText(this,"RegisterInfo is saved",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"You are now registered!",Toast.LENGTH_LONG).show();
     }
 
     @Override
