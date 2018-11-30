@@ -313,6 +313,7 @@ public class SchedulingActivity extends AppCompatActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //go back to menu page
+                        startActivity(new Intent(getApplicationContext(), MainMenu.class));
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {

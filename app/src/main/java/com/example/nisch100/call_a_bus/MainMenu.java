@@ -17,12 +17,16 @@ import com.google.firebase.auth.FirebaseAuth;
 public class MainMenu extends AppCompatActivity {
 
     private Button schedule, myBuses, account, logoutButton;
+
+
     private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+
+       
 
         firebaseAuth = FirebaseAuth.getInstance();
         schedule = findViewById(R.id.schedule_button);
