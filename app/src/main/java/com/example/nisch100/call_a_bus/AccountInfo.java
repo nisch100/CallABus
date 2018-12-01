@@ -32,10 +32,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,60 +47,45 @@ import java.util.List;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
- * A login screen that offers login via email/password.
+ * (Ran)
+ *                         Personal Information Page
  */
+
 public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
-
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
     private static final String TAG = "error_msg";
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private TextView mShowNameView;
     private EditText mNameView;
     private EditText mAgeView;
     private EditText mPhoneView;
+    private TextView mShowPhoneView;
     private EditText mAddressView;
     private View mProgressView;
     private View mLoginFormView;
 
-    // Database references
+    // Database related
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
+    private DatabaseReference userReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_info);
-        // Set up the login form.
-        // mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        // populateAutoComplete();
 
-        // mPasswordView = (EditText) findViewById(R.id.password);
         mNameView = (EditText) findViewById(R.id.user_name);
         mAgeView = (EditText) findViewById(R.id.user_age);
         mPhoneView = (EditText) findViewById(R.id.user_phone);
-        mAddressView = (EditText) findViewById(R.id.user_address);
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         user = firebaseAuth.getCurrentUser();
+        userReference = databaseReference.child("users").child(user.getUid());
 
         if (user != null) {
             // User is signed in
@@ -105,8 +94,6 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
             // User is signed out
             Log.d(TAG, "onAuthStateChanged:signed_out");
         }
-
-
 
         // myRef.child(userID).child("which field do you want to update").setValue(ValueVariable);
 
@@ -138,6 +125,23 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        mShowNameView = (TextView) findViewById(R.id.show_user_name);
+        mShowPhoneView = (TextView) findViewById(R.id.show_user_phone);
+
+        userReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String currentName = (String) dataSnapshot.child("name").getValue();
+                String currentPhone = (String) dataSnapshot.child("phone").getValue();
+                // Toast.makeText(getApplicationContext(), "data snapshot get: " + currentName, Toast.LENGTH_SHORT).show();
+                mShowNameView.setText("Current Name:  " + currentName);
+                mShowPhoneView.setText("Current Phone:  " + currentPhone);
+            }
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {}
+        });
+
     }
 
     private void saveInfo(){
@@ -146,16 +150,19 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
         String mName = mNameView.getText().toString();
         String mAge = mAgeView.getText().toString();
         String mPhone = mPhoneView.getText().toString();
-        String mAddress = mAddressView.getText().toString();
+        // String mAddress = mAddressView.getText().toString();
 
-        DatabaseReference mUser = databaseReference.child(user.getUid());
-        mUser.child("name").setValue(mName);
-        mUser.child("age").setValue(mAge);
-        mUser.child("phone").setValue(mPhone);
-        mUser.child("address").setValue(mAddress);
+        // DatabaseReference mUser = databaseReference.child(user.getUid());
+        // mUser.child("name").setValue(mName);
+
+        databaseReference.child("users").child(user.getUid()).child("name").setValue(mName);
+
+        // mUser.child("age").setValue(mAge);
+        // mUser.child("phone").setValue(mPhone);
+        // mUser.child("address").setValue(mAddress);
 
         // toast a message "personal information is updated"
-        Toast toast = Toast.makeText(getApplicationContext(), "personal information is updated", Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(getApplicationContext(), "account information is updated for: " + mName, Toast.LENGTH_SHORT);
         toast.show();
     }
 
@@ -168,104 +175,6 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
 
     }
 
-    private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
-
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
-            }
-        }
-    }
-
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-    /*
-    private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
-
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
-
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
-        }
-    }
-    */
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
@@ -367,61 +276,5 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }
 }
 
