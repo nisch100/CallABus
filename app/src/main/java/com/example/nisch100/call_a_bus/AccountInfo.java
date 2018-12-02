@@ -57,13 +57,9 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
 
     // UI references.
     private AutoCompleteTextView mEmailView;
-    private TextView mShowNameView;
     private EditText mNameView;
-    private EditText mAgeView;
     private EditText mPhoneView;
     private EditText mPasswordView;
-    private TextView mShowPhoneView;
-    private EditText mAddressView;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -183,13 +179,14 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
         Toast.makeText(getApplicationContext(), "account information is updated for: " + mName, Toast.LENGTH_SHORT).show();
     }
 
-    public void switchActivity(View view){
+    public void switchRelativesInfo(View view){
         Intent intent = new Intent(getApplicationContext(), RelativesInfo.class);
         startActivity(intent);
     }
 
-    public void onRadioButtonClicked(View view){
-
+    public void switchMainMenu(View view){
+        Intent intent = new Intent(getApplicationContext(), MainMenu.class);
+        startActivity(intent);
     }
 
 

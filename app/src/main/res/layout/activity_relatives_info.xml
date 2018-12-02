@@ -13,14 +13,7 @@
     tools:context=".RelativesInfo">
 
 
-    <Button
-        android:id="@+id/switch_page_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="go to personal info page"
-        android:onClick="switchActivity" />
-
-
+    <!--
     <TextView
         android:id="@+id/relatives_information"
         android:layout_width="match_parent"
@@ -28,6 +21,7 @@
         android:textSize="25dp"
         android:gravity="center"
         android:text="Relatives Information" />
+    -->
 
 
     <ProgressBar
@@ -104,6 +98,7 @@
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
+            <!--
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -116,6 +111,7 @@
                     android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
+            -->
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -156,19 +152,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
-                    android:id="@+id/relative2_relationship"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Relative 2 Relationship"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
                     android:id="@+id/relative2_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -197,19 +180,6 @@
                     android:layout_height="wrap_content"
                     android:hint="Relative 3 Name"
                     android:inputType="textPersonName"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/relative3_relationship"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Relative 3 Relationship"
-                    android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
@@ -275,6 +245,22 @@
                 android:layout_marginTop="16dp"
                 android:text="Save Relative Info"
                 android:textStyle="bold" />
+
+
+            <Button
+                android:id="@+id/AccountInfo_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Account Information Page"
+                android:onClick="switchAccountInfo" />
+
+            <Button
+                android:id="@+id/MainMenu_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Main Menu"
+                android:onClick="switchMainMenu" />
+
 
         </LinearLayout>
     </ScrollView>

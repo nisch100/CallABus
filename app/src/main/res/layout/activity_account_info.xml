@@ -11,15 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".AccountInfo">
 
-
-    <Button
-        android:id="@+id/switch_page_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="go to relatives info page"
-        android:onClick="switchActivity" />
-
-
+    <!--
     <TextView
         android:id="@+id/personal_information"
         android:layout_width="match_parent"
@@ -27,6 +19,7 @@
         android:textSize="25dp"
         android:gravity="center"
         android:text="Account Information" />
+    -->
 
     <ProgressBar
         android:id="@+id/login_progress"
@@ -195,6 +188,21 @@
                 android:layout_marginTop="16dp"
                 android:text="Save Persoanl Info"
                 android:textStyle="bold" />
+
+
+            <Button
+                android:id="@+id/RelativesInfo_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Relatives Information Page"
+                android:onClick="switchRelativesInfo" />
+
+            <Button
+                android:id="@+id/MainMenu_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Main Menu"
+                android:onClick="switchMainMenu" />
 
         </LinearLayout>
     </ScrollView>

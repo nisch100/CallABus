@@ -56,22 +56,20 @@ public class RelativesInfo extends AppCompatActivity implements LoaderCallbacks<
 
     // UI references.
     private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
     private EditText mNameView;
-    private TextView mShowNameView;
-    private EditText mRelationshipView;
     private EditText mPhoneView;
-    private TextView mShowPhoneView;
-    private EditText mEmail2View;
-    private EditText mAddressView;
+    private EditText mName2View;
+    private EditText mPhone2View;
+    private EditText mName3View;
+    private EditText mPhone3View;
     private View mProgressView;
     private View mLoginFormView;
-    private EditText mRelView;
     // Database related
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
     private DatabaseReference userReference;
+    private DatabaseReference relativeReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,14 +94,19 @@ public class RelativesInfo extends AppCompatActivity implements LoaderCallbacks<
         */
 
         mNameView = (EditText) findViewById(R.id.relative_name);
-        mRelationshipView = (EditText) findViewById(R.id.relative_relationship);
         mPhoneView = (EditText) findViewById(R.id.relative_phone);
-        // mEmail2View = (EditText) findViewById(R.id.relative_email);
+
+        mName2View = (EditText) findViewById(R.id.relative2_name);
+        mPhone2View = (EditText) findViewById(R.id.relative2_phone);
+
+        mName3View = (EditText) findViewById(R.id.relative3_name);
+        mPhone3View = (EditText) findViewById(R.id.relative3_phone);
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         user = firebaseAuth.getCurrentUser();
         userReference = databaseReference.child("users").child(user.getUid());
+        relativeReference = databaseReference.child("relatives").child(user.getUid());
 
         if (user != null) {
             // User is signed in
@@ -125,23 +128,40 @@ public class RelativesInfo extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        userReference.addValueEventListener(new ValueEventListener() {
+        relativeReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String currentName = (String) dataSnapshot.child("relName").getValue();
-                String currentPhone = (String) dataSnapshot.child("relNum").getValue();
-                String currentRelationship = (String) dataSnapshot.child("relRel").getValue();
+                String currentName1 = (String) dataSnapshot.child("rel1").child("name").getValue();
+                String currentPhone1 = (String) dataSnapshot.child("rel1").child("phone").getValue();
+                String currentName2 = (String) dataSnapshot.child("rel2").child("name").getValue();
+                String currentPhone2 = (String) dataSnapshot.child("rel2").child("phone").getValue();
+                String currentName3 = (String) dataSnapshot.child("rel3").child("name").getValue();
+                String currentPhone3 = (String) dataSnapshot.child("rel3").child("phone").getValue();
+                // String currentRelationship = (String) dataSnapshot.child("relRel").getValue();
                 // Toast.makeText(getApplicationContext(), "data snapshot get: " + currentName, Toast.LENGTH_SHORT).show();
 
-                if(currentName.length() >= 1) {
-                    mNameView.setText(currentName, TextView.BufferType.EDITABLE);
+                if(currentName1.length() >= 1) {
+                    mNameView.setText(currentName1, TextView.BufferType.EDITABLE);
                 }
-                if (currentPhone.length() >= 1) {
-                    mPhoneView.setText(currentPhone, TextView.BufferType.EDITABLE);
+                if (currentPhone1.length() >= 1) {
+                    mPhoneView.setText(currentPhone1, TextView.BufferType.EDITABLE);
                 }
+                if(currentName2.length() >= 1) {
+                    mName2View.setText(currentName2, TextView.BufferType.EDITABLE);
+                }
+                if (currentPhone2.length() >= 1) {
+                    mPhone2View.setText(currentPhone2, TextView.BufferType.EDITABLE);
+                }
+                if(currentName3.length() >= 1) {
+                    mName3View.setText(currentName3, TextView.BufferType.EDITABLE);
+                }
+                if (currentPhone3.length() >= 1) {
+                    mPhone3View.setText(currentPhone3, TextView.BufferType.EDITABLE);
+                }
+                /*
                 if(currentRelationship.length() >= 1){
                     mRelationshipView.setText(currentRelationship, TextView.BufferType.EDITABLE);
-                }
+                }*/
 
             }
             @Override
@@ -154,33 +174,64 @@ public class RelativesInfo extends AppCompatActivity implements LoaderCallbacks<
         // TODO
         String mName = mNameView.getText().toString();
         String mPhone = mPhoneView.getText().toString();
-        String mRelationship = mRelationshipView.getText().toString();
+        String mName2 = mName2View.getText().toString();
+        String mPhone2 = mPhone2View.getText().toString();
+        String mName3 = mName3View.getText().toString();
+        String mPhone3 = mPhone3View.getText().toString();
+        // String mRelationship = mRelationshipView.getText().toString();
 
-        if(mName.length() >= 1) {
-            databaseReference.child("users").child(user.getUid()).child("relName").setValue(mName);
+        // relative 1 update
+        if(mName.length() >= 1 && mPhone.length() >= 1) {
+            relativeReference.child("rel1").child("name").setValue(mName);
+            relativeReference.child("rel1").child("phone").setValue(mPhone);
         }
         else{
-            Toast.makeText(getApplicationContext(), "All info need to be filled. Please don't leave any field empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Info for primary relative need to be filled", Toast.LENGTH_SHORT).show();
         }
-        if(mPhone.length() >= 1) {
-            databaseReference.child("users").child(user.getUid()).child("relNum").setValue(mPhone);
+
+        // relative 2 update
+        if(mName2.length() >= 1 && mPhone2.length() >= 1) {
+            relativeReference.child("rel2").child("name").setValue(mName2);
+            relativeReference.child("rel2").child("phone").setValue(mPhone2);
+        }
+        else if(mName2.length() == 0 && mPhone2.length() == 0){
+
         }
         else{
-            Toast.makeText(getApplicationContext(), "All info need to be filled. Please don't leave any field empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Please fill in complete info for relative 2", Toast.LENGTH_SHORT).show();
         }
+
+        // relative 3 update
+        if(mName3.length() >= 1 && mPhone3.length() >= 1) {
+            relativeReference.child("rel3").child("name").setValue(mName3);
+            relativeReference.child("rel3").child("phone").setValue(mPhone3);
+        }
+        else if(mName3.length() == 0 && mPhone3.length() == 0){
+
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Please fill in complete info for relative 3", Toast.LENGTH_SHORT).show();
+        }
+
+        /*
         if(mRelationship.length() >= 1) {
             databaseReference.child("users").child(user.getUid()).child("relRel").setValue(mRelationship);
         }
         else{
             Toast.makeText(getApplicationContext(), "All info need to be filled. Please don't leave any field empty", Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
         // toast a message "personal information is updated"
         Toast.makeText(getApplicationContext(), "relative information is updated for: " + mName, Toast.LENGTH_SHORT).show();
     }
 
-    public void switchActivity(View view){
+    public void switchAccountInfo(View view){
         Intent intent = new Intent(getApplicationContext(), AccountInfo.class);
+        startActivity(intent);
+    }
+
+    public void switchMainMenu(View view){
+        Intent intent = new Intent(getApplicationContext(), MainMenu.class);
         startActivity(intent);
     }
 
