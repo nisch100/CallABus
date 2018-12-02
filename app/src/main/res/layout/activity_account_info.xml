@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:textSize="25dp"
         android:gravity="center"
-        android:text="Personal Information" />
+        android:text="Account Information" />
 
     <ProgressBar
         android:id="@+id/login_progress"
@@ -93,9 +93,14 @@
                     android:imeActionId="6"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
+                    android:inputType="textPersonName"
                     android:maxLines="1"
                     android:singleLine="true" />
+                <TextView
+                    android:id="@+id/show_user_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp" />
             </android.support.design.widget.TextInputLayout>
 
 
@@ -132,14 +137,15 @@
                     android:id="@+id/user_age"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_age"
+                    android:hint="Age"
                     android:imeActionId="6"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
+                    android:inputType="number"
                     android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
+
 
 
             <android.support.design.widget.TextInputLayout
@@ -153,12 +159,17 @@
                     android:imeActionId="6"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
+                    android:inputType="phone"
                     android:maxLines="1"
                     android:singleLine="true" />
+                <TextView
+                    android:id="@+id/show_user_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp" />
             </android.support.design.widget.TextInputLayout>
 
-
+            <!--
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -175,7 +186,7 @@
                     android:maxLines="4"
                     android:singleLine="false" />
             </android.support.design.widget.TextInputLayout>
-
+            -->
 
             <Button
                 android:id="@+id/email_sign_in_button"
@@ -183,7 +194,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/save_personal_info"
+                android:text="Save Persoanl Info"
                 android:textStyle="bold" />
 
         </LinearLayout>
