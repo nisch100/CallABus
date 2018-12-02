@@ -98,8 +98,7 @@ public class RelativesInfo extends AppCompatActivity implements LoaderCallbacks<
         mNameView = (EditText) findViewById(R.id.relative_name);
         mRelationshipView = (EditText) findViewById(R.id.relative_relationship);
         mPhoneView = (EditText) findViewById(R.id.relative_phone);
-        mEmail2View = (EditText) findViewById(R.id.relative_email);
-        // mAddressView = (EditText) findViewById(R.id.relative_address);
+        // mEmail2View = (EditText) findViewById(R.id.relative_email);
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -126,17 +125,23 @@ public class RelativesInfo extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        mShowNameView = (TextView) findViewById(R.id.show_relative_name);
-        mShowPhoneView = (TextView) findViewById(R.id.show_relative_phone);
-
         userReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String currentName = (String) dataSnapshot.child("relName").getValue();
                 String currentPhone = (String) dataSnapshot.child("relNum").getValue();
+                String currentRelationship = (String) dataSnapshot.child("relRel").getValue();
                 // Toast.makeText(getApplicationContext(), "data snapshot get: " + currentName, Toast.LENGTH_SHORT).show();
-                mShowNameView.setText("Current Name:  " + currentName);
-                mShowPhoneView.setText("Current Phone:  " + currentPhone);
+
+                if(currentName.length() >= 1) {
+                    mNameView.setText(currentName, TextView.BufferType.EDITABLE);
+                }
+                if (currentPhone.length() >= 1) {
+                    mPhoneView.setText(currentPhone, TextView.BufferType.EDITABLE);
+                }
+                if(currentRelationship.length() >= 1){
+                    mRelationshipView.setText(currentRelationship, TextView.BufferType.EDITABLE);
+                }
 
             }
             @Override
@@ -151,13 +156,27 @@ public class RelativesInfo extends AppCompatActivity implements LoaderCallbacks<
         String mPhone = mPhoneView.getText().toString();
         String mRelationship = mRelationshipView.getText().toString();
 
-        databaseReference.child("users").child(user.getUid()).child("relName").setValue(mName);
-        databaseReference.child("users").child(user.getUid()).child("relNum").setValue(mPhone);
-        databaseReference.child("users").child(user.getUid()).child("relRel").setValue(mRelationship);
+        if(mName.length() >= 1) {
+            databaseReference.child("users").child(user.getUid()).child("relName").setValue(mName);
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "All info need to be filled. Please don't leave any field empty", Toast.LENGTH_SHORT).show();
+        }
+        if(mPhone.length() >= 1) {
+            databaseReference.child("users").child(user.getUid()).child("relNum").setValue(mPhone);
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "All info need to be filled. Please don't leave any field empty", Toast.LENGTH_SHORT).show();
+        }
+        if(mRelationship.length() >= 1) {
+            databaseReference.child("users").child(user.getUid()).child("relRel").setValue(mRelationship);
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "All info need to be filled. Please don't leave any field empty", Toast.LENGTH_SHORT).show();
+        }
 
         // toast a message "personal information is updated"
-        Toast toast = Toast.makeText(getApplicationContext(), "relative information is updated for: " + mName, Toast.LENGTH_SHORT);
-        toast.show();
+        Toast.makeText(getApplicationContext(), "relative information is updated for: " + mName, Toast.LENGTH_SHORT).show();
     }
 
     public void switchActivity(View view){

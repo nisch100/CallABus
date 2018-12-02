@@ -57,11 +57,11 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
 
     // UI references.
     private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
     private TextView mShowNameView;
     private EditText mNameView;
     private EditText mAgeView;
     private EditText mPhoneView;
+    private EditText mPasswordView;
     private TextView mShowPhoneView;
     private EditText mAddressView;
     private View mProgressView;
@@ -79,8 +79,8 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
         setContentView(R.layout.activity_account_info);
 
         mNameView = (EditText) findViewById(R.id.user_name);
-        mAgeView = (EditText) findViewById(R.id.user_age);
         mPhoneView = (EditText) findViewById(R.id.user_phone);
+        mPasswordView = (EditText) findViewById(R.id.user_password);
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -127,20 +127,21 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        mShowNameView = (TextView) findViewById(R.id.show_user_name);
-        mShowPhoneView = (TextView) findViewById(R.id.show_user_phone);
-
         userReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String currentName = (String) dataSnapshot.child("name").getValue();
                 String currentPhone = (String) dataSnapshot.child("phone").getValue();
+                String currentPassword = (String) dataSnapshot.child("password").getValue();
                 // Toast.makeText(getApplicationContext(), "data snapshot get: " + currentName, Toast.LENGTH_SHORT).show();
-                if(currentName !="") {
-                    mShowNameView.setText("Current Name:  " + currentName);
+                if (currentName.length() >= 1) {
+                    mNameView.setText(currentName, TextView.BufferType.EDITABLE);
                 }
-                if (currentPhone != "") {
-                    mShowPhoneView.setText("Current Phone:  " + currentPhone);
+                if (currentPhone.length() >= 1) {
+                    mPhoneView.setText(currentPhone, TextView.BufferType.EDITABLE);
+                }
+                if (currentPassword.length() >= 1) {
+                    mPasswordView.setText(currentPassword, TextView.BufferType.EDITABLE);
                 }
             }
             @Override
@@ -153,26 +154,33 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
         // save account information to firebase
         // TODO
         String mName = mNameView.getText().toString();
-        String mAge = mAgeView.getText().toString();
         String mPhone = mPhoneView.getText().toString();
+        String mPassword = mPasswordView.getText().toString();
         // String mAddress = mAddressView.getText().toString();
 
         // DatabaseReference mUser = databaseReference.child(user.getUid());
         // mUser.child("name").setValue(mName);
-        if(mName != "") {
-            databaseReference.child("users").child(user.getUid()).child("name").setValue(mName);
+        if(mName.length() >= 1) {
+            userReference.child("name").setValue(mName);
         }
-
-        if(mPhone != "") {
-            databaseReference.child("users").child(user.getUid()).child("phone").setValue(mPhone);
+        else{
+            Toast.makeText(getApplicationContext(), "All info need to be filled. Please don't leave any field empty", Toast.LENGTH_SHORT).show();
         }
-        // mUser.child("age").setValue(mAge);
-        // mUser.child("phone").setValue(mPhone);
-        // mUser.child("address").setValue(mAddress);
+        if(mPhone.length() >= 1) {
+            userReference.child("phone").setValue(mPhone);
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "All info need to be filled. Please don't leave any field empty", Toast.LENGTH_SHORT).show();
+        }
+        if(mPassword.length() >= 1) {
+            userReference.child("password").setValue(mPassword);
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Password length minumum 6 characters", Toast.LENGTH_SHORT).show();
+        }
 
         // toast a message "personal information is updated"
-        Toast toast = Toast.makeText(getApplicationContext(), "account information is updated for: " + mName, Toast.LENGTH_SHORT);
-        toast.show();
+        Toast.makeText(getApplicationContext(), "account information is updated for: " + mName, Toast.LENGTH_SHORT).show();
     }
 
     public void switchActivity(View view){
