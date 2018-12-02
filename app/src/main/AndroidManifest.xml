@@ -17,7 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <receiver android:name=".AlarmNotificationReceiver" ></receiver>
         <activity android:name=".MainActivity"
             android:label = "@string/Registration_Page">
 
