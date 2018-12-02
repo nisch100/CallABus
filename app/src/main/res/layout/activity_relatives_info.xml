@@ -82,6 +82,15 @@
 
             -->
 
+            <!-- Relative 1 -->
+            <TextView
+                android:id="@+id/relatives1_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:text="Relatives 1" />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -89,12 +98,11 @@
                     android:id="@+id/relative_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Relative's Name"
+                    android:hint="Relative 1 Name"
                     android:inputType="textPersonName"
                     android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
-
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -103,12 +111,11 @@
                     android:id="@+id/relative_relationship"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_relationship"
+                    android:hint="Relative 1 Relationship"
                     android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
-
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -117,7 +124,104 @@
                     android:id="@+id/relative_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_phone"
+                    android:hint="Relative 1 Phone Number"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Relative 2 -->
+            <TextView
+                android:id="@+id/relative2_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:text="Relatives 2" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/relative2_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Relative 2 Name"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/relative2_relationship"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Relative 2 Relationship"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/relative2_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Relative 2 Phone Number"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <!-- Relative 3 -->
+            <TextView
+                android:id="@+id/relative3_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:text="Relatives 3" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/relative3_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Relative 3 Name"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/relative3_relationship"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Relative 3 Relationship"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/relative3_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Relative 3 Phone Number"
                     android:inputType="phone"
                     android:maxLines="1"
                     android:singleLine="true" />

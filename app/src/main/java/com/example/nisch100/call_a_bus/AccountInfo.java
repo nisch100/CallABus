@@ -172,7 +172,7 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
         else{
             Toast.makeText(getApplicationContext(), "All info need to be filled. Please don't leave any field empty", Toast.LENGTH_SHORT).show();
         }
-        if(mPassword.length() >= 1) {
+        if(mPassword.length() >= 6) {
             userReference.child("password").setValue(mPassword);
         }
         else{
