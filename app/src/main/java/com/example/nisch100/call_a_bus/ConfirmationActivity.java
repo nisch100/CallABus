@@ -1,6 +1,10 @@
 package com.example.nisch100.call_a_bus;
 
+import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.opengl.Visibility;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,7 +26,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.Year;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,6 +54,9 @@ public class ConfirmationActivity extends AppCompatActivity {
     String uid;
     int numBuses;
 
+    private AlarmManager mAlarmManager;
+    private PendingIntent mNotificationReceiverPendingIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +80,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         uid = myAuth.getCurrentUser().getUid();
 
 
-        databaseReference.child("users").child(uid).child("numBuses").addListenerForSingleValueEvent(new ValueEventListener() {
+        /*databaseReference.child("users").child(uid).child("numBuses").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 numBuses = dataSnapshot.getValue(Integer.class);
@@ -84,7 +93,7 @@ public class ConfirmationActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
         addToDatabase(busToSchedule);
 
@@ -144,10 +153,74 @@ public class ConfirmationActivity extends AppCompatActivity {
         ArrayList<String> relativeReminders = extras.getStringArrayList("relatives");
 
         Bus scheduledBus = new Bus(month, day, year,
-                                initialHour, initialMinute, initialAmPm,
-                                pickUpLocation, dropOffLocation,
-                                roundTrip, roundTripHour, roundTripMin, rtAmPm,
-                                reminderTimes, relativeReminders);
+                initialHour, initialMinute, initialAmPm,
+                pickUpLocation, dropOffLocation,
+                roundTrip, roundTripHour, roundTripMin, rtAmPm,
+                reminderTimes, relativeReminders);
+
+        Calendar cal = Calendar.getInstance();
+        /*if (tempMin < 10) {
+            tempMin += 50;
+            if (tempHour == 0) {
+                tempHour = 23;
+                if (day == 1) {
+                    day = 31;
+                    if (month == 0) {
+                        month = 11;
+                        year --;
+                    }
+                    else {
+                        month--;
+                    }
+                    if (month == 1) {
+                        if (year % 4 == 0 && ((year % 100 != 0) || (year % 4 == 0))) {
+                            day = 29;
+                        }
+                        else {
+                            day = 28;
+                        }
+                    }
+                    else if (month == 3 || month == 5 || month == 8 || month == 10) {
+                        day = 30;
+                    }
+                    else {
+                        day = 31;
+                    }
+                }
+                else {
+                    day --;
+                }
+            }
+            else {
+                tempHour --;
+            }
+        }*/
+        if (initialAmPm.equals("PM") && initialHour != 12) {
+            initialHour += 12;
+        }
+        else if (initialAmPm.equals("AM") && initialHour == 12) {
+            initialHour -= 12;
+        }
+        if (initialMinute < 10) {
+            initialMinute += 60;
+            initialHour --;
+        }
+        cal.set(year, month - 1, day, initialHour, initialMinute - 10);
+        Intent mNotificationReceiverIntent = new Intent(ConfirmationActivity.this,
+                AlarmNotificationReceiver.class);
+        mNotificationReceiverPendingIntent = PendingIntent.getBroadcast(
+                ConfirmationActivity.this, 0, mNotificationReceiverIntent, 0);
+        mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.SEND_SMS)
+                    == PackageManager.PERMISSION_GRANTED) {
+
+                mAlarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), mNotificationReceiverPendingIntent);
+                Toast.makeText(ConfirmationActivity.this, year + " " + (month - 1) + " " + day + " " + initialHour + " " + (initialMinute - 10),Toast.LENGTH_LONG).show();
+            }
+        }
+
         return scheduledBus;
     }
 
