@@ -149,7 +149,7 @@ public class AddRelatives extends AppCompatActivity {
                                 databaseReference.child("relatives").child(uid).child("rel2").setValue(relativeTwo);
                                 databaseReference.child("relatives").child(uid).child("rel3").setValue(relativeThree);
 
-                                Toast.makeText(AddRelatives.this,"RegisterInfo is saved",Toast.LENGTH_LONG).show();
+                                Toast.makeText(AddRelatives.this,"You are now signed in!",Toast.LENGTH_LONG).show();
                             }
                         });
             }

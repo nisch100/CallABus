@@ -15,6 +15,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -30,12 +32,14 @@ public class SchedulingReminders extends AppCompatActivity {
     CheckBox r10, rArrival, rOther, rel1, rel2, rel3;
     EditText amount;
     int reminderTime;
+    String uid;
 
     ArrayList<String> mRelatives = new ArrayList<String>();
     ArrayList<Integer> mReminders = new ArrayList<Integer>();
 
     FirebaseDatabase database;
     DatabaseReference databaseReference;
+
 
 
 
@@ -51,6 +55,10 @@ public class SchedulingReminders extends AppCompatActivity {
         maintainCheckboxes(rArrival, "rem");
 
         rOther = (CheckBox) findViewById(R.id.other);
+
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseReference.child("relatives").child(uid);
+
 
         rel1 = (CheckBox) findViewById(R.id.relative1);
         maintainCheckboxes(rel1, "rel");
@@ -106,6 +114,10 @@ public class SchedulingReminders extends AppCompatActivity {
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    public void displayRelatives(Relative one, Relative two, Relative three){
+
     }
 
     public void confirmation(View v){
