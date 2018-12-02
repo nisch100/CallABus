@@ -66,7 +66,7 @@ public class RelativesInfo extends AppCompatActivity implements LoaderCallbacks<
     private EditText mAddressView;
     private View mProgressView;
     private View mLoginFormView;
-
+    private EditText mRelView;
     // Database related
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
@@ -137,6 +137,7 @@ public class RelativesInfo extends AppCompatActivity implements LoaderCallbacks<
                 // Toast.makeText(getApplicationContext(), "data snapshot get: " + currentName, Toast.LENGTH_SHORT).show();
                 mShowNameView.setText("Current Name:  " + currentName);
                 mShowPhoneView.setText("Current Phone:  " + currentPhone);
+
             }
             @Override
             public void onCancelled(DatabaseError firebaseError) {}

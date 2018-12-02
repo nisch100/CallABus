@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">Call-A-Bus</string>
+    <string name="app_name">Call A Bus</string>
+    <string name = "Registration_Page">Register</string>
+    <string name = "Login_Page">Login</string>
     <string name="your_buses_title">Your Buses</string>
     <string name="reminder_settings_title">Reminder Settings</string>
     <string name="title_activity_your_buses">YourBusesActivity</string>

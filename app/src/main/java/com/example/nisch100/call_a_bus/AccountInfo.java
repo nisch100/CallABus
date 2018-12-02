@@ -87,6 +87,7 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
         user = firebaseAuth.getCurrentUser();
         userReference = databaseReference.child("users").child(user.getUid());
 
+
         if (user != null) {
             // User is signed in
             Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
@@ -135,8 +136,12 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
                 String currentName = (String) dataSnapshot.child("name").getValue();
                 String currentPhone = (String) dataSnapshot.child("phone").getValue();
                 // Toast.makeText(getApplicationContext(), "data snapshot get: " + currentName, Toast.LENGTH_SHORT).show();
-                mShowNameView.setText("Current Name:  " + currentName);
-                mShowPhoneView.setText("Current Phone:  " + currentPhone);
+                if(currentName !="") {
+                    mShowNameView.setText("Current Name:  " + currentName);
+                }
+                if (currentPhone != "") {
+                    mShowPhoneView.setText("Current Phone:  " + currentPhone);
+                }
             }
             @Override
             public void onCancelled(DatabaseError firebaseError) {}
@@ -154,9 +159,13 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
 
         // DatabaseReference mUser = databaseReference.child(user.getUid());
         // mUser.child("name").setValue(mName);
+        if(mName != "") {
+            databaseReference.child("users").child(user.getUid()).child("name").setValue(mName);
+        }
 
-        databaseReference.child("users").child(user.getUid()).child("name").setValue(mName);
-
+        if(mPhone != "") {
+            databaseReference.child("users").child(user.getUid()).child("phone").setValue(mPhone);
+        }
         // mUser.child("age").setValue(mAge);
         // mUser.child("phone").setValue(mPhone);
         // mUser.child("address").setValue(mAddress);
