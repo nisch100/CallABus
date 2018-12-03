@@ -54,6 +54,9 @@ public class ConfirmationActivity extends AppCompatActivity {
     String uid;
     int numBuses;
 
+    int busID;
+    Bus bus;
+
     private AlarmManager mAlarmManager;
     private PendingIntent mNotificationReceiverPendingIntent;
 
@@ -95,8 +98,18 @@ public class ConfirmationActivity extends AppCompatActivity {
             }
         });*/
 
-        addToDatabase(busToSchedule);
+        if (getIntent().hasExtra("bus")) {
+            bus = (Bus) getIntent().getExtras().getParcelable("bus");
+        } else {
+            bus = null;
+        }
 
+        if (getIntent().hasExtra("busID")) {
+            busID = getIntent().getExtras().getInt("busID");
+            addToDatabase(busToSchedule, busID);
+        } else {
+            addToDatabase(busToSchedule);
+        }
 
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +117,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                 goToHome(view);
             }
         });
+
 
     }
 
@@ -228,6 +242,17 @@ public class ConfirmationActivity extends AppCompatActivity {
 
 
         databaseReference.child("buses").child(uid).child("bus" + numBuses).setValue(bus);
+
+        //updates user in database
+//        userObj.setNumBuses(userObj.getNumBuses() + 1);
+//        databaseReference.child("users").child(uid).setValue(userObj);
+    }
+
+    public void addToDatabase(Bus bus, int busID) {
+        //Toast.makeText(getApplicationContext(), numBuses, Toast.LENGTH_LONG);
+
+
+        databaseReference.child("buses").child(uid).child("bus" + busID).setValue(bus);
 
         //updates user in database
 //        userObj.setNumBuses(userObj.getNumBuses() + 1);
