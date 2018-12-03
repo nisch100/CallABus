@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -13,7 +12,14 @@
     tools:context=".RelativesInfo">
 
 
-    <!--
+    <Button
+        android:id="@+id/switch_page_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="go to personal info page"
+        android:onClick="switchActivity" />
+
+
     <TextView
         android:id="@+id/relatives_information"
         android:layout_width="match_parent"
@@ -21,7 +27,6 @@
         android:textSize="25dp"
         android:gravity="center"
         android:text="Relatives Information" />
-    -->
 
 
     <ProgressBar
@@ -76,15 +81,6 @@
 
             -->
 
-            <!-- Relative 1 -->
-            <TextView
-                android:id="@+id/relatives1_information"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:gravity="center"
-                android:text="Relatives 1" />
-
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -92,13 +88,16 @@
                     android:id="@+id/relative_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Relative 1 Name"
-                    android:inputType="textPersonName"
+                    android:hint="@string/prompt_name"
+                    android:imeActionId="6"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
-            <!--
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -106,12 +105,15 @@
                     android:id="@+id/relative_relationship"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Relative 1 Relationship"
-                    android:inputType="text"
+                    android:hint="@string/prompt_relationship"
+                    android:imeActionId="6"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
-            -->
+
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -120,85 +122,16 @@
                     android:id="@+id/relative_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Relative 1 Phone Number"
-                    android:inputType="phone"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
-
-            <!-- Relative 2 -->
-            <TextView
-                android:id="@+id/relative2_information"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:gravity="center"
-                android:text="Relatives 2" />
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/relative2_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Relative 2 Name"
-                    android:inputType="textPersonName"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/relative2_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Relative 2 Phone Number"
-                    android:inputType="phone"
+                    android:hint="@string/prompt_phone"
+                    android:imeActionId="6"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
 
-            <!-- Relative 3 -->
-            <TextView
-                android:id="@+id/relative3_information"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:gravity="center"
-                android:text="Relatives 3" />
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/relative3_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Relative 3 Name"
-                    android:inputType="textPersonName"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/relative3_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Relative 3 Phone Number"
-                    android:inputType="phone"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
-
-
-            <!--
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -210,14 +143,12 @@
                     android:imeActionId="6"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="textEmailAddress"
+                    android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
-            -->
 
 
-            <!--
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -234,7 +165,6 @@
                     android:maxLines="4"
                     android:singleLine="false" />
             </android.support.design.widget.TextInputLayout>
-            -->
 
 
             <Button
@@ -243,24 +173,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Save Relative Info"
+                android:text="@string/action_sign_in"
                 android:textStyle="bold" />
-
-
-            <Button
-                android:id="@+id/AccountInfo_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Account Information Page"
-                android:onClick="switchAccountInfo" />
-
-            <Button
-                android:id="@+id/MainMenu_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Main Menu"
-                android:onClick="switchMainMenu" />
-
 
         </LinearLayout>
     </ScrollView>
