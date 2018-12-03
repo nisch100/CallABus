@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.*;
@@ -112,8 +113,8 @@ public class UpcomingBusesFragment extends ListFragment {
         mListener = null;
     }
 
-    public void onResume() {
-        super.onResume();
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         items = new ArrayList<>();
         buses = new ArrayList<>();
@@ -121,6 +122,7 @@ public class UpcomingBusesFragment extends ListFragment {
 
         new LongOperation().execute("");
     }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -189,6 +191,8 @@ public class UpcomingBusesFragment extends ListFragment {
                                     buses.add(newBus);
                                     items.add(new ListItem(busDate, dropOffLocation));
                                 }
+
+                                fragment.setListAdapter(new CustomArrayAdapter(getActivity(), R.layout.list_item, items, buses, 1));
                             }
                         }
 
@@ -201,7 +205,8 @@ public class UpcomingBusesFragment extends ListFragment {
 
         @Override
         protected void onPostExecute(String result) {
-            fragment.setListAdapter(new CustomArrayAdapter(getActivity(), R.layout.list_item, items, buses, 1));
+            Log.d("TAG", "post execute");
+            //fragment.setListAdapter(new CustomArrayAdapter(getActivity(), R.layout.list_item, items, buses, 1));
         }
 
         @Override
