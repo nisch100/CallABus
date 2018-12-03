@@ -52,11 +52,20 @@ public class ConfirmationActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference databaseReference;
     String uid;
+
+    int numBuses;
+    String rel1;
+    String rel2;
+    String rel3;
+    Calendar cal = Calendar.getInstance();
+    HashMap<String, String> phoneNums;
+
     int busID;
     Bus bus;
 
     private AlarmManager mAlarmManager;
     private PendingIntent mNotificationReceiverPendingIntent;
+    private Intent mNotificationReceiverIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,8 +150,8 @@ public class ConfirmationActivity extends AppCompatActivity {
             initialAmPm = "AM";
         }
 
-        String pickUpLocation = extras.getString("pickDest");
-        String dropOffLocation = extras.getString("dropDest");
+        final String pickUpLocation = extras.getString("pickDest");
+        final String dropOffLocation = extras.getString("dropDest");
 
         boolean roundTrip = extras.getBoolean("roundtrip?");
         int roundTripHour= extras.getInt("rtHourExtra");
@@ -160,8 +169,8 @@ public class ConfirmationActivity extends AppCompatActivity {
             rtAmPm = "AM";
         }
 
-        ArrayList<Integer> reminderTimes = extras.getIntegerArrayList("reminders");
-        ArrayList<String> relativeReminders = extras.getStringArrayList("relatives");
+        final ArrayList<Integer> reminderTimes = extras.getIntegerArrayList("reminders");
+        final ArrayList<String> relativeReminders = extras.getStringArrayList("relatives");
 
         Bus scheduledBus = new Bus(month, day, year,
                 initialHour, initialMinute, initialAmPm,
@@ -169,68 +178,82 @@ public class ConfirmationActivity extends AppCompatActivity {
                 roundTrip, roundTripHour, roundTripMin, rtAmPm,
                 reminderTimes, relativeReminders);
 
-        Calendar cal = Calendar.getInstance();
-        /*if (tempMin < 10) {
-            tempMin += 50;
-            if (tempHour == 0) {
-                tempHour = 23;
-                if (day == 1) {
-                    day = 31;
-                    if (month == 0) {
-                        month = 11;
-                        year --;
-                    }
-                    else {
-                        month--;
-                    }
-                    if (month == 1) {
-                        if (year % 4 == 0 && ((year % 100 != 0) || (year % 4 == 0))) {
-                            day = 29;
-                        }
-                        else {
-                            day = 28;
-                        }
-                    }
-                    else if (month == 3 || month == 5 || month == 8 || month == 10) {
-                        day = 30;
-                    }
-                    else {
-                        day = 31;
-                    }
-                }
-                else {
-                    day --;
-                }
-            }
-            else {
-                tempHour --;
-            }
-        }*/
+
+
         if (initialAmPm.equals("PM") && initialHour != 12) {
             initialHour += 12;
         }
         else if (initialAmPm.equals("AM") && initialHour == 12) {
             initialHour -= 12;
         }
-        if (initialMinute < 10) {
-            initialMinute += 60;
-            initialHour --;
-        }
-        cal.set(year, month - 1, day, initialHour, initialMinute - 10);
-        Intent mNotificationReceiverIntent = new Intent(ConfirmationActivity.this,
-                AlarmNotificationReceiver.class);
-        mNotificationReceiverPendingIntent = PendingIntent.getBroadcast(
-                ConfirmationActivity.this, 0, mNotificationReceiverIntent, 0);
-        mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.SEND_SMS)
-                    == PackageManager.PERMISSION_GRANTED) {
+        phoneNums = new HashMap<String, String>();
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference();
+        myAuth = FirebaseAuth.getInstance();
+        uid = myAuth.getCurrentUser().getUid();
+        cal.set(year, month - 1, day, initialHour, initialMinute);
+        databaseReference.child("relatives").child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String rel1Name = (String) dataSnapshot.child("rel1").child("name").getValue();
+                String rel2Name = (String) dataSnapshot.child("rel2").child("name").getValue();
+                for (int j = 0; j < relativeReminders.size(); j++) {
+                    if (relativeReminders.get(j).equals(rel1Name)) {
+                        String temp = String.valueOf(dataSnapshot.child("rel1").child("phone").getValue());
+                        Log.i("if called", "here");
+                        phoneNums.put("rel1", "+1" + temp);
+                    }
+                    else if (relativeReminders.get(j).equals(rel2Name)) {
+                        String temp = String.valueOf(dataSnapshot.child("rel2").child("phone").getValue());
+                        phoneNums.put("rel2", "+1" + temp);
+                        ConfirmationActivity.this.rel2 = "+1" + temp;
+                    }
+                    else {
+                        String temp = String.valueOf(dataSnapshot.child("rel3").child("phone").getValue());
+                        phoneNums.put("rel3", "+1" + temp);
+                        ConfirmationActivity.this.rel3 = "+1" + temp;
+                    }
+                }
+                for (int i = 0; i < reminderTimes.size(); i++) {
 
-                mAlarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), mNotificationReceiverPendingIntent);
-                Toast.makeText(ConfirmationActivity.this, year + " " + (month - 1) + " " + day + " " + initialHour + " " + (initialMinute - 10),Toast.LENGTH_LONG).show();
+                    mNotificationReceiverIntent = new Intent(ConfirmationActivity.this,
+                            AlarmNotificationReceiver.class);
+                    mNotificationReceiverIntent.putExtra("pickup", pickUpLocation);
+                    mNotificationReceiverIntent.putExtra("dropoff", dropOffLocation);
+                    mNotificationReceiverIntent.putExtra("time", reminderTimes.get(i).toString());
+
+                    if (phoneNums.get("rel1") != null) {
+                        mNotificationReceiverIntent.putExtra(getString(R.string.rel1), phoneNums.get("rel1"));
+                    }
+                    if (phoneNums.get("rel2") != null) {
+                        mNotificationReceiverIntent.putExtra(getString(R.string.rel2), phoneNums.get("rel2"));
+                    }
+                    if (phoneNums.get("rel3") != null) {
+                        mNotificationReceiverIntent.putExtra(getString(R.string.rel3), phoneNums.get("rel3"));
+                    }
+
+
+
+                    mNotificationReceiverPendingIntent = PendingIntent.getBroadcast(
+                            ConfirmationActivity.this, i, mNotificationReceiverIntent, 0);
+                    mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                        if (checkSelfPermission(Manifest.permission.SEND_SMS)
+                                == PackageManager.PERMISSION_GRANTED) {
+                            mAlarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() - (60000*reminderTimes.get(i)), mNotificationReceiverPendingIntent);
+                        }
+                    }
+                }
             }
-        }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         return scheduledBus;
     }
