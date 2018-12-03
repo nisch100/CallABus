@@ -8,7 +8,7 @@
 
     <string name="radio_default">Default (10 minutes before arrival and at arrival)</string>
     <string name="radio_custom">Custom</string>
-    <string name="title_activity_account_info">AccountInfo</string>
+    <string name="title_activity_account_info">Account Information</string>
 
     <!-- Strings related to login -->
     <string name="prompt_password">Password (optional)</string>
@@ -28,7 +28,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_relatives_info">RelativesInfo</string>
+    <string name="title_activity_relatives_info">Relatives Information</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="title_activity_account">Account</string>
     <string name="action_settings">Settings</string>
