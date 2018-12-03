@@ -16,4 +16,10 @@ public class Utilities {
         }
     }
 
+    // Switch to Main Menu
+    static void switchMainMenu(Context current){
+        Intent intent = new Intent(current, MainMenu.class);
+        current.startActivity(intent);
+    }
+
 }

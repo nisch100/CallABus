@@ -22,6 +22,9 @@ import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -147,6 +150,23 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
             public void onCancelled(DatabaseError firebaseError) {}
         });
 
+    }
+
+    // Switch to Main Menu (upo button click)
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_general, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.main_menu_button) {
+            // call switch method in Utility
+            Utilities.switchMainMenu(getApplicationContext());
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void saveInfo(){
