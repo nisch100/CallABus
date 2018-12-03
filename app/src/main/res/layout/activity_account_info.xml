@@ -208,12 +208,15 @@
                 android:text="Relatives Information Page"
                 android:onClick="switchRelativesInfo" />
 
+
+            <!--
             <Button
                 android:id="@+id/MainMenu_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Main Menu"
                 android:onClick="switchMainMenu" />
+            -->
 
         </LinearLayout>
     </ScrollView>
