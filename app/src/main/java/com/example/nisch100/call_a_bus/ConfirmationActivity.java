@@ -1,7 +1,13 @@
 package com.example.nisch100.call_a_bus;
 
+import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.opengl.Visibility;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -11,10 +17,18 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.time.Year;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,8 +47,15 @@ public class ConfirmationActivity extends AppCompatActivity {
 
     Bus busToSchedule;
 
+    FirebaseAuth myAuth;
     FirebaseDatabase database;
     DatabaseReference databaseReference;
+    Registerfirebase userObj;
+    String uid;
+    int numBuses;
+
+    private AlarmManager mAlarmManager;
+    private PendingIntent mNotificationReceiverPendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +72,31 @@ public class ConfirmationActivity extends AppCompatActivity {
         doneButton = (Button) findViewById(R.id.done);
 
         busToSchedule = initializeBus();
+        printInfo();
 
+        myAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
+        uid = myAuth.getCurrentUser().getUid();
+
+
+        /*databaseReference.child("users").child(uid).child("numBuses").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                numBuses = dataSnapshot.getValue(Integer.class);
+                databaseReference.child("users").child(uid).child("numBuses").setValue(numBuses+1);
+
+                // initiateUserObj(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });*/
+
         addToDatabase(busToSchedule);
-        printInfo();
+
 
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +104,6 @@ public class ConfirmationActivity extends AppCompatActivity {
                 goToHome(view);
             }
         });
-
 
     }
 
@@ -110,22 +150,105 @@ public class ConfirmationActivity extends AppCompatActivity {
         }
 
         ArrayList<Integer> reminderTimes = extras.getIntegerArrayList("reminders");
-        ArrayList<String> relativeReminders = extras.getStringArrayList("relatives");
+        final ArrayList<String> relativeReminders = extras.getStringArrayList("relatives");
 
         Bus scheduledBus = new Bus(month, day, year,
-                                initialHour, initialMinute, initialAmPm,
-                                pickUpLocation, dropOffLocation,
-                                roundTrip, roundTripHour, roundTripMin, rtAmPm,
-                                reminderTimes, relativeReminders);
+                initialHour, initialMinute, initialAmPm,
+                pickUpLocation, dropOffLocation,
+                roundTrip, roundTripHour, roundTripMin, rtAmPm,
+                reminderTimes, relativeReminders);
+
+        Calendar cal = Calendar.getInstance();
+
+        if (initialAmPm.equals("PM") && initialHour != 12) {
+            initialHour += 12;
+        }
+        else if (initialAmPm.equals("AM") && initialHour == 12) {
+            initialHour -= 12;
+        }
+
+        for (int i = 0; i < reminderTimes.size(); i++) {
+            cal.set(year, month - 1, day, initialHour, initialMinute);
+            final Intent mNotificationReceiverIntent = new Intent(ConfirmationActivity.this,
+                    AlarmNotificationReceiver.class);
+            mNotificationReceiverIntent.putExtra("pickup", pickUpLocation);
+            mNotificationReceiverIntent.putExtra("dropoff", dropOffLocation);
+            mNotificationReceiverIntent.putExtra("time", reminderTimes.get(i).toString());
+            mNotificationReceiverIntent.putExtra("numRelatives", relativeReminders.size());
+            database = FirebaseDatabase.getInstance();
+            databaseReference = database.getReference();
+            myAuth = FirebaseAuth.getInstance();
+            uid = myAuth.getCurrentUser().getUid();
+            databaseReference.child("relatives").child(uid).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    String rel1Name = (String) dataSnapshot.child("rel1").child("name").getValue();
+                    String rel2Name = (String) dataSnapshot.child("rel2").child("name").getValue();
+                    for (int j = 0; j < relativeReminders.size(); j++) {
+                        if (relativeReminders.get(j).equals(rel1Name)) {
+                            mNotificationReceiverIntent.putExtra("Relative " + j, "+1" + dataSnapshot.child("rel1").child("phone").getValue().toString());
+                        }
+                        else if (relativeReminders.get(j).equals(rel2Name)) {
+                            mNotificationReceiverIntent.putExtra("Relative " + j, "+1" + dataSnapshot.child("rel2").child("phone").getValue().toString());
+                        }
+                        else {
+                            mNotificationReceiverIntent.putExtra("Relative " + j, "+1" + dataSnapshot.child("rel3").child("phone").getValue());
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            mNotificationReceiverPendingIntent = PendingIntent.getBroadcast(
+                    ConfirmationActivity.this, i, mNotificationReceiverIntent, 0);
+            mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.SEND_SMS)
+                        == PackageManager.PERMISSION_GRANTED) {
+
+                    mAlarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() - (60000*reminderTimes.get(i)), mNotificationReceiverPendingIntent);
+                    //Toast.makeText(ConfirmationActivity.this, "Alarm set to " + reminderTimes.get(i) + " minutes before departure",Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+
+
+
         return scheduledBus;
     }
 
 
-    private void addToDatabase(Bus bus) {
-        Map<String, Object> busScheduler = new HashMap<String, Object>();
-        busScheduler.put("Scheduled Buses", bus);
+    public void addToDatabase(Bus bus) {
+        //Toast.makeText(getApplicationContext(), numBuses, Toast.LENGTH_LONG);
 
-        databaseReference.child("users");
+
+        databaseReference.child("buses").child(uid).child("bus" + numBuses).setValue(bus);
+
+        //updates user in database
+//        userObj.setNumBuses(userObj.getNumBuses() + 1);
+//        databaseReference.child("users").child(uid).setValue(userObj);
+    }
+
+    public void initiateUserObj(DataSnapshot snapshot){
+        for(DataSnapshot ds : snapshot.getChildren()){
+            if(ds.getValue().equals("users")){
+                for(DataSnapshot snap : ds.getChildren()){
+                    if(snap.getValue().equals(uid)){
+                        userObj = new Registerfirebase();
+                        userObj.setName(snap.child(uid).getValue(Registerfirebase.class).getName());
+                        userObj.setEmail(snap.child(uid).getValue(Registerfirebase.class).getEmail());
+                        userObj.setPassword(snap.child(uid).getValue(Registerfirebase.class).getPassword());
+                        userObj.setPhone(snap.child(uid).getValue(Registerfirebase.class).getPhone());
+                        userObj.setNumBuses(snap.child(uid).getValue(Registerfirebase.class).getNumBuses());
+                    }
+                }
+            }
+        }
     }
 
     public void goToHome(View view){

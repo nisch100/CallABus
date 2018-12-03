@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver android:name=".AlarmNotificationReceiver" ></receiver>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,11 +30,10 @@
             android:name=".YourBusesActivity"
             android:label="@string/your_buses_title"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".SchedulingActivity"
-            android:exported="true" />
-        <activity android:name=".SchedulingReminders" />
-        <activity android:name=".ConfirmationActivity" />
+        <activity android:name=".SchedulingActivity"
+            android:exported="true"/>
+        <activity android:name=".SchedulingReminders"/>
+        <activity android:name=".ConfirmationActivity"/>
         <activity
             android:name=".AccountInfo"
             android:label="@string/title_activity_account_info">
@@ -54,6 +56,13 @@
             android:name=".MainMenu"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_main_menu">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".AddRelatives">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
