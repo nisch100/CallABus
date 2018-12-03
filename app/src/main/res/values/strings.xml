@@ -38,4 +38,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="whyrelatives"><u>Why relatives?</u></string>
+    <string name="rel1">rel1</string>
+    <string name="rel2">rel2</string>
+    <string name="rel3">rel3</string>
 </resources>

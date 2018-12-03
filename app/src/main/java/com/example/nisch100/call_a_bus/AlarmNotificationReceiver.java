@@ -36,9 +36,15 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         createNotificationChannel(context, intent);
         SmsManager smsManager = SmsManager.getDefault();
-        int max = intent.getExtras().getInt("numRelatives");
-        for (int i = 0; i < max; i++) {
-            smsManager.sendTextMessage("+16096517382", null, "My bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " leaves in " + intent.getExtras().getString("time") + " minutes.", null, null);
+        Log.i("here", "" + intent.getExtras().keySet().size());
+        if (intent.getExtras().getString("rel1") != null) {
+            smsManager.sendTextMessage(intent.getExtras().getString("rel1"), null, "My bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " leaves in " + intent.getExtras().getString("time") + " minutes.", null, null);
+        }
+        if (intent.getExtras().getString("rel2") != null) {
+            smsManager.sendTextMessage(intent.getExtras().getString("rel2"), null, "My bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " leaves in " + intent.getExtras().getString("time") + " minutes.", null, null);
+        }
+        if (intent.getExtras().getString("rel3") != null) {
+            smsManager.sendTextMessage(intent.getExtras().getString("rel3"), null, "My bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " leaves in " + intent.getExtras().getString("time") + " minutes.", null, null);
         }
 
     }
