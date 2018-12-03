@@ -1,6 +1,7 @@
 package com.example.nisch100.call_a_bus;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -45,12 +46,6 @@ public class YourBusesActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private Context mContext;
 
-    //NEW STUFF BELOW
-    DatabaseReference rootRef;
-    FirebaseAuth firebaseAuth;
-    FirebaseUser user;
-    //NEW STUFF ABOVE
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,15 +68,7 @@ public class YourBusesActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
+        Log.d("TAG", "started your buses");
     }
 
     @Override
@@ -126,9 +113,11 @@ public class YourBusesActivity extends AppCompatActivity {
         public static Fragment newInstance(int sectionNumber) {
             Fragment fragment;
             if (sectionNumber == 1) {
-                fragment = new PastBusesFragment();
+                // fragment = new PastBusesFragment();
+                fragment = PastBusesFragment.newInstance(null, null);
             } else {
-                fragment = new UpcomingBusesFragment();
+                // fragment = new UpcomingBusesFragment();
+                fragment = UpcomingBusesFragment.newInstance(null, null);
             }
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);

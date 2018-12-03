@@ -4,19 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PastBusSummaryActivity">
-
-    <TextView
-        android:id="@+id/fullscreen_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:keepScreenOn="true"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".UpcomingBusSummaryActivity">
 
     <TextView
         android:id="@+id/textView11"
@@ -107,6 +95,22 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="Round Trip Pick-up Time: 5:30PM"
+            android:textAppearance="@android:style/TextAppearance.Widget.TextView" />
+
+        <Button
+            android:id="@+id/edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Edit Bus"
+            android:textAppearance="@android:style/TextAppearance.Widget.TextView" />
+
+        <Button
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Delete Bus"
             android:textAppearance="@android:style/TextAppearance.Widget.TextView" />
 
         <Button

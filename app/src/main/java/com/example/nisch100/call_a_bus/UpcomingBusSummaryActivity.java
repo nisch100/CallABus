@@ -9,12 +9,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class PastBusSummaryActivity extends AppCompatActivity {
+public class UpcomingBusSummaryActivity extends AppCompatActivity {
 
     private TextView pageHeading;
     private TextView date;
@@ -25,21 +26,19 @@ public class PastBusSummaryActivity extends AppCompatActivity {
     private TextView relRemin;
     private TextView rtTime;
 
-    Button doneButton;
+    Button doneButton, editButton, deleteButton;
 
     Bus busToSchedule;
 
-    FirebaseAuth myAuth;
-    FirebaseDatabase database;
-    DatabaseReference databaseReference;
-    Registerfirebase userObj;
-    String uid;
-    int numBuses;
+    DatabaseReference rootRef;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser user;
+    int busID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_past_bus_summary);
+        setContentView(R.layout.activity_upcoming_bus_summary);
 
         pageHeading = (TextView) findViewById(R.id.textView2);
         date = (TextView) findViewById(R.id.textView3);
@@ -50,18 +49,30 @@ public class PastBusSummaryActivity extends AppCompatActivity {
         timeRemin = (TextView) findViewById(R.id.textView7);
         relRemin = (TextView) findViewById(R.id.textView8);
         doneButton = (Button) findViewById(R.id.done);
+        deleteButton = (Button) findViewById(R.id.delete);
+        editButton = (Button) findViewById(R.id.edit);
+
 
         busToSchedule = (Bus) getIntent().getExtras().getParcelable("bus");
+        busID = getIntent().getExtras().getInt("position");
+
         printInfo(busToSchedule);
 
-        myAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference();
-        uid = myAuth.getCurrentUser().getUid();
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
 
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rootRef.child("buses").child(user.getUid()).child("bus" + busID).removeValue();
                 finish();
             }
         });

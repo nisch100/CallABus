@@ -82,12 +82,6 @@ public class PastBusesFragment extends ListFragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        items = new ArrayList<>();
-        buses = new ArrayList<>();
-        fragment = this;
-
-        new LongOperation().execute("");
     }
 
     @Override
@@ -95,6 +89,11 @@ public class PastBusesFragment extends ListFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.list, container, false);
+        items = new ArrayList<>();
+        buses = new ArrayList<>();
+        fragment = this;
+
+        new LongOperation().execute("");
         return v;
     }
 
@@ -175,10 +174,11 @@ public class PastBusesFragment extends ListFragment {
                                 rtAmPm = snap.child("rtAmPm").getValue(String.class);
                                 reminderTimes = (ArrayList<Integer>) snap.child("reminderTimes").getValue();
                                 relativeReminders = (ArrayList<String>) snap.child("relativeReminders").getValue();
-                                busDate = new Date(year, month, day, initialHour, initialMinute);
+                                busDate = new Date(year - 1900, month - 1, day,
+                                        initialAmPm.equals("AM") ? initialHour : initialHour + 12, initialMinute);
 
 
-                                if (!busDate.before(currDate)) {
+                                if (busDate.before(currDate)) {
                                     Bus newBus = new Bus(month, day, year, initialHour, initialMinute,
                                             initialAmPm, pickUpLocation, dropOffLocation, roundTrip,
                                             roundTripHour, roundTripMin, rtAmPm, reminderTimes,

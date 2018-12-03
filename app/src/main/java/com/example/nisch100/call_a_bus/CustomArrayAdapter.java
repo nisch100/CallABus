@@ -31,7 +31,7 @@ public class CustomArrayAdapter extends ArrayAdapter<ListItem> {
         TextView txtDestination;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         ListItem rowItem = getItem(position);
         final Bus bus = buses.get(position);
@@ -57,9 +57,13 @@ public class CustomArrayAdapter extends ArrayAdapter<ListItem> {
                 if (type == 0) { // past bus
                     Intent intent = new Intent(view.getContext(), PastBusSummaryActivity.class); //2nd param temp
                     intent.putExtra("bus", bus);
+                    intent.putExtra("position", position);
                     context.startActivity(intent);
                 } else { // upcoming bus
-
+                    Intent intent = new Intent(view.getContext(), UpcomingBusSummaryActivity.class); //2nd param temp
+                    intent.putExtra("bus", bus);
+                    intent.putExtra("position", position);
+                    context.startActivity(intent);
                 }
             }
         });

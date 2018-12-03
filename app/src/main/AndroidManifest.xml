@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <receiver android:name=".AlarmNotificationReceiver" ></receiver>
+        <receiver android:name=".AlarmNotificationReceiver" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,11 +30,13 @@
         <activity
             android:name=".YourBusesActivity"
             android:label="@string/your_buses_title"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SchedulingActivity"
-            android:exported="true"/>
-        <activity android:name=".SchedulingReminders"/>
-        <activity android:name=".ConfirmationActivity"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".SchedulingActivity"
+            android:exported="true" />
+        <activity android:name=".SchedulingReminders" />
+        <activity android:name=".ConfirmationActivity" />
         <activity
             android:name=".AccountInfo"
             android:label="@string/title_activity_account_info">
@@ -69,7 +72,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PastBusSummaryActivity"></activity>
+        <activity android:name=".PastBusSummaryActivity" />
+        <activity android:name=".UpcomingBusSummaryActivity"></activity>
     </application>
 
 </manifest>

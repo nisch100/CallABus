@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.*;
@@ -78,12 +79,7 @@ public class UpcomingBusesFragment extends ListFragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        items = new ArrayList<>();
-        buses = new ArrayList<>();
-        fragment = this;
-
-        new LongOperation().execute(""); }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,6 +110,16 @@ public class UpcomingBusesFragment extends ListFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void onResume() {
+        super.onResume();
+
+        items = new ArrayList<>();
+        buses = new ArrayList<>();
+        fragment = this;
+
+        new LongOperation().execute("");
     }
 
     /**
@@ -170,9 +176,10 @@ public class UpcomingBusesFragment extends ListFragment {
                                 rtAmPm = snap.child("rtAmPm").getValue(String.class);
                                 reminderTimes = (ArrayList<Integer>) snap.child("reminderTimes").getValue();
                                 relativeReminders = (ArrayList<String>) snap.child("relativeReminders").getValue();
-                                busDate = new Date(year, month, day, initialHour, initialMinute);
+                                busDate = new Date(year - 1900, month - 1, day,
+                                        initialAmPm.equals("AM") ? initialHour : initialHour + 12, initialMinute);
 
-
+                                Log.d("TAG", busDate.toString() + " /n " + currDate.toString());
                                 if (!busDate.before(currDate)) {
                                     Bus newBus = new Bus(month, day, year, initialHour, initialMinute,
                                             initialAmPm, pickUpLocation, dropOffLocation, roundTrip,
