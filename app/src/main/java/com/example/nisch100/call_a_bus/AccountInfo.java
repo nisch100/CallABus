@@ -168,6 +168,7 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
         }
         else{
             Toast.makeText(getApplicationContext(), "All info need to be filled. Please don't leave any field empty", Toast.LENGTH_SHORT).show();
+            return;
         }
         if(mPassword.length() >= 6) {
             if(mPassword.equals(mConfirmPassword)){
@@ -175,14 +176,16 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
             }
             else{
                 Toast.makeText(getApplicationContext(), "Passwords not matching", Toast.LENGTH_SHORT).show();
+                return;
             }
         }
         else{
             Toast.makeText(getApplicationContext(), "Password length minumum 6 characters", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         // Toast a message to confirm data update
-        Toast.makeText(getApplicationContext(), "account information is updated for: " + mName, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "account information is updated", Toast.LENGTH_SHORT).show();
     }
 
     // Method: switch to Relatives Info Page

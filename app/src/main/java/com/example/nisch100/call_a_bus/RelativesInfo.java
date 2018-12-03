@@ -208,6 +208,7 @@ public class RelativesInfo extends AppCompatActivity implements LoaderCallbacks<
         }
         else{
             Toast.makeText(getApplicationContext(), "Info for primary relative need to be filled", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         // relative 2 update
@@ -216,10 +217,11 @@ public class RelativesInfo extends AppCompatActivity implements LoaderCallbacks<
             relativeReference.child("rel2").child("phone").setValue(mPhone2);
         }
         else if(mName2.length() == 0 && mPhone2.length() == 0){
-
+            // do nothing, since information for relative 2 is not required
         }
         else{
             Toast.makeText(getApplicationContext(), "Please fill in complete info for relative 2", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         // relative 3 update
@@ -228,22 +230,15 @@ public class RelativesInfo extends AppCompatActivity implements LoaderCallbacks<
             relativeReference.child("rel3").child("phone").setValue(mPhone3);
         }
         else if(mName3.length() == 0 && mPhone3.length() == 0){
-
+            // do nothing, since information for relative 3 is not required
         }
         else{
             Toast.makeText(getApplicationContext(), "Please fill in complete info for relative 3", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        /*
-        if(mRelationship.length() >= 1) {
-            databaseReference.child("users").child(user.getUid()).child("relRel").setValue(mRelationship);
-        }
-        else{
-            Toast.makeText(getApplicationContext(), "All info need to be filled. Please don't leave any field empty", Toast.LENGTH_SHORT).show();
-        }*/
-
-        // toast a message "personal information is updated"
-        Toast.makeText(getApplicationContext(), "relative information is updated for: " + mName, Toast.LENGTH_SHORT).show();
+        // toast a message "relative information is updated"
+        Toast.makeText(getApplicationContext(), "relative information is updated", Toast.LENGTH_SHORT).show();
     }
 
     public void switchAccountInfo(View view){
