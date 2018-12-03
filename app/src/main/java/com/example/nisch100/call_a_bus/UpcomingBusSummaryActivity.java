@@ -1,5 +1,6 @@
 package com.example.nisch100.call_a_bus;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -54,7 +55,7 @@ public class UpcomingBusSummaryActivity extends AppCompatActivity {
 
 
         busToSchedule = (Bus) getIntent().getExtras().getParcelable("bus");
-        busID = getIntent().getExtras().getInt("position");
+        busID = getIntent().getExtras().getInt("busID");
 
         printInfo(busToSchedule);
 
@@ -74,6 +75,15 @@ public class UpcomingBusSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
                 rootRef.child("buses").child(user.getUid()).child("bus" + busID).removeValue();
                 finish();
+            }
+        });
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), SchedulingActivity.class); 
+                intent.putExtra("bus", busToSchedule);
+                intent.putExtra("busID", busID);
+                view.getContext().startActivity(intent);
             }
         });
     }

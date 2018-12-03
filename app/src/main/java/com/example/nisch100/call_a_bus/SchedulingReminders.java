@@ -37,6 +37,8 @@ public class SchedulingReminders extends AppCompatActivity {
     EditText amount;
     int reminderTime;
     String uid;
+    int busID;
+    Bus bus;
 
     ArrayList<String> mRelatives = new ArrayList<String>();
     ArrayList<Integer> mReminders = new ArrayList<Integer>();
@@ -108,6 +110,17 @@ public class SchedulingReminders extends AppCompatActivity {
             }
         });
 
+        if (getIntent().hasExtra("bus")) {
+            bus = (Bus) getIntent().getExtras().getParcelable("bus");
+        } else {
+            bus = null;
+        }
+
+        if (getIntent().hasExtra("busID")) {
+            busID = getIntent().getExtras().getInt("busID");
+        } else {
+            busID = -1;
+        }
     }
 
     public void promptCancel(View v) {
@@ -234,6 +247,8 @@ public class SchedulingReminders extends AppCompatActivity {
 
         Intent confirmationIntent = new Intent(SchedulingReminders.this, ConfirmationActivity.class);
         confirmationIntent.putExtras(extras);
+        confirmationIntent.putExtra("bus", bus);
+        confirmationIntent.putExtra("busID", busID);
 
         confirmationIntent.putIntegerArrayListExtra("reminders", mReminders);
         confirmationIntent.putStringArrayListExtra("relatives", mRelatives);

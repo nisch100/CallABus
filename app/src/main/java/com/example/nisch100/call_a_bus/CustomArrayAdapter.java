@@ -57,12 +57,12 @@ public class CustomArrayAdapter extends ArrayAdapter<ListItem> {
                 if (type == 0) { // past bus
                     Intent intent = new Intent(view.getContext(), PastBusSummaryActivity.class); //2nd param temp
                     intent.putExtra("bus", bus);
-                    intent.putExtra("position", position);
+                    intent.putExtra("busID", position);
                     context.startActivity(intent);
                 } else { // upcoming bus
                     Intent intent = new Intent(view.getContext(), UpcomingBusSummaryActivity.class); //2nd param temp
                     intent.putExtra("bus", bus);
-                    intent.putExtra("position", position);
+                    intent.putExtra("busID", position);
                     context.startActivity(intent);
                 }
             }
