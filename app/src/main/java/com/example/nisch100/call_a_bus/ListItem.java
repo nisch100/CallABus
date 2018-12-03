@@ -1,11 +1,13 @@
 package com.example.nisch100.call_a_bus;
 
-public class ListItem {
-    public String date, time, destination;
+import java.util.Date;
 
-    public ListItem(String date, String time, String destination) {
+public class ListItem {
+    public Date date;
+    public String destination;
+
+    public ListItem(Date date, String destination) {
         this.date = date;
-        this.time = time;
         this.destination = destination;
     }
 }

@@ -27,10 +27,11 @@
             android:name=".YourBusesActivity"
             android:label="@string/your_buses_title"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SchedulingActivity"
-            android:exported="true"/>
-        <activity android:name=".SchedulingReminders"/>
-        <activity android:name=".ConfirmationActivity"/>
+        <activity
+            android:name=".SchedulingActivity"
+            android:exported="true" />
+        <activity android:name=".SchedulingReminders" />
+        <activity android:name=".ConfirmationActivity" />
         <activity
             android:name=".AccountInfo"
             android:label="@string/title_activity_account_info">
@@ -55,11 +56,11 @@
             android:label="@string/title_activity_main_menu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".PastBusSummaryActivity"></activity>
     </application>
-
-
 
 </manifest>

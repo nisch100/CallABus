@@ -1,5 +1,6 @@
 package com.example.nisch100.call_a_bus;
 
+import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,9 +20,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.nisch100.call_a_bus.dummy.PastBusesFragment;
-import com.example.nisch100.call_a_bus.dummy.UpcomingBusesFragment;
+import com.example.nisch100.call_a_bus.fragments.PastBusesFragment;
+import com.example.nisch100.call_a_bus.fragments.UpcomingBusesFragment;
+import com.google.firebase.auth.*;
+import com.google.firebase.database.*;
 
 public class YourBusesActivity extends AppCompatActivity {
 
@@ -39,11 +43,20 @@ public class YourBusesActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private Context mContext;
+
+    //NEW STUFF BELOW
+    DatabaseReference rootRef;
+    FirebaseAuth firebaseAuth;
+    FirebaseUser user;
+    //NEW STUFF ABOVE
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_your_buses);
+
+        mContext = this;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -70,7 +83,6 @@ public class YourBusesActivity extends AppCompatActivity {
         });
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
