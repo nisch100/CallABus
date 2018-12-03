@@ -34,20 +34,24 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        createNotificationChannel(context);
+        createNotificationChannel(context, intent);
         SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage("+16096517382", null, "My bus from Senior Center to Mall leaves in 10 minutes", null, null);
+        int max = intent.getExtras().getInt("numRelatives");
+        for (int i = 0; i < max; i++) {
+            smsManager.sendTextMessage("+16096517382", null, "My bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " leaves in " + intent.getExtras().getString("time") + " minutes.", null, null);
+        }
+
     }
 
-    public void createNotificationChannel(Context context) {
+    public void createNotificationChannel(Context context, Intent intent) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel n = new NotificationChannel(channelID, "Departure in 10 min", NotificationManager.IMPORTANCE_HIGH);
+                NotificationChannel n = new NotificationChannel(channelID, "Departure soon", NotificationManager.IMPORTANCE_HIGH);
                 n.setDescription("departure reminder");
                 NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 nm.createNotificationChannel(n);
                 Notification.Builder nb = new Notification.Builder(context, channelID);
-                nb.setContentText("Your bus from Senior Center to Mall leaves in 10 minutes.");
+                nb.setContentText("Your bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " leaves in " + intent.getExtras().getString("time") + " minutes.");
                 nb.setContentTitle("CallABus");
                 nb.setAutoCancel(true);
                 nb.setSmallIcon(R.drawable.ic_launcher_background);
