@@ -89,11 +89,6 @@ public class PastBusesFragment extends ListFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.list, container, false);
-        items = new ArrayList<>();
-        buses = new ArrayList<>();
-        fragment = this;
-
-        new LongOperation().execute("");
         return v;
     }
 
@@ -118,6 +113,16 @@ public class PastBusesFragment extends ListFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        items = new ArrayList<>();
+        buses = new ArrayList<>();
+        fragment = this;
+
+        new LongOperation().execute("");
     }
 
     /**
@@ -187,6 +192,8 @@ public class PastBusesFragment extends ListFragment {
                                     buses.add(newBus);
                                     items.add(new ListItem(busDate, dropOffLocation));
                                 }
+
+                                fragment.setListAdapter(new CustomArrayAdapter(getActivity(), R.layout.list_item, items, buses, 1));
                             }
                         }
 

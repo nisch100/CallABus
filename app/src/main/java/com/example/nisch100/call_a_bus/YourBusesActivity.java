@@ -71,6 +71,15 @@ public class YourBusesActivity extends AppCompatActivity {
         Log.d("TAG", "started your buses");
     }
 
+    protected void onRestart() {
+        super.onRestart();
+
+        Intent intent = getIntent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        startActivity(intent);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

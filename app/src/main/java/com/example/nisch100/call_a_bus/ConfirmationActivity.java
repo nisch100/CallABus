@@ -51,8 +51,8 @@ public class ConfirmationActivity extends AppCompatActivity {
     FirebaseAuth myAuth;
     FirebaseDatabase database;
     DatabaseReference databaseReference;
-    Registerfirebase userObj;
     String uid;
+
     int numBuses;
     String rel1;
     String rel2;
@@ -89,34 +89,34 @@ public class ConfirmationActivity extends AppCompatActivity {
         databaseReference = database.getReference();
         uid = myAuth.getCurrentUser().getUid();
 
+        if (getIntent().hasExtra("busID")) {
+            busID = getIntent().getExtras().getInt("busID");
+        } else {
+            busID = -1;
+        }
 
-        /*databaseReference.child("users").child(uid).child("numBuses").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("users").child(uid).child("numBuses").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                numBuses = dataSnapshot.getValue(Integer.class);
-                databaseReference.child("users").child(uid).child("numBuses").setValue(numBuses+1);
+                int num = dataSnapshot.getValue(Integer.class);
 
-                // initiateUserObj(dataSnapshot);
+                databaseReference.child("users").child(uid).child("numBuses").removeEventListener(this);
+                databaseReference.child("users").child(uid).child("numBuses").setValue(num+1);
+
+                if (busID != -1) {
+                    Log.d("TAG", "adding to DB with " + busID);
+                    addToDatabase(busToSchedule, busID);
+                } else {
+                    Log.d("TAG", "adding to DB with " + num);
+                    addToDatabase(busToSchedule, num);
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });*/
-
-        if (getIntent().hasExtra("bus")) {
-            bus = (Bus) getIntent().getExtras().getParcelable("bus");
-        } else {
-            bus = null;
-        }
-
-        if (getIntent().hasExtra("busID")) {
-            busID = getIntent().getExtras().getInt("busID");
-            addToDatabase(busToSchedule, busID);
-        } else {
-            addToDatabase(busToSchedule);
-        }
+        });
 
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,9 +124,8 @@ public class ConfirmationActivity extends AppCompatActivity {
                 goToHome(view);
             }
         });
-
-
     }
+
 
     private Bus initializeBus(){
         Intent received = getIntent();
@@ -256,48 +255,13 @@ public class ConfirmationActivity extends AppCompatActivity {
         });
 
 
-
         return scheduledBus;
     }
 
 
-    public void addToDatabase(Bus bus) {
-        //Toast.makeText(getApplicationContext(), numBuses, Toast.LENGTH_LONG);
-
-
-        databaseReference.child("buses").child(uid).child("bus" + numBuses).setValue(bus);
-
-        //updates user in database
-//        userObj.setNumBuses(userObj.getNumBuses() + 1);
-//        databaseReference.child("users").child(uid).setValue(userObj);
-    }
-
-    public void addToDatabase(Bus bus, int busID) {
-        //Toast.makeText(getApplicationContext(), numBuses, Toast.LENGTH_LONG);
-
-
-        databaseReference.child("buses").child(uid).child("bus" + busID).setValue(bus);
-
-        //updates user in database
-//        userObj.setNumBuses(userObj.getNumBuses() + 1);
-//        databaseReference.child("users").child(uid).setValue(userObj);
-    }
-
-    public void initiateUserObj(DataSnapshot snapshot){
-        for(DataSnapshot ds : snapshot.getChildren()){
-            if(ds.getValue().equals("users")){
-                for(DataSnapshot snap : ds.getChildren()){
-                    if(snap.getValue().equals(uid)){
-                        userObj = new Registerfirebase();
-                        userObj.setName(snap.child(uid).getValue(Registerfirebase.class).getName());
-                        userObj.setEmail(snap.child(uid).getValue(Registerfirebase.class).getEmail());
-                        userObj.setPassword(snap.child(uid).getValue(Registerfirebase.class).getPassword());
-                        userObj.setPhone(snap.child(uid).getValue(Registerfirebase.class).getPhone());
-                        userObj.setNumBuses(snap.child(uid).getValue(Registerfirebase.class).getNumBuses());
-                    }
-                }
-            }
-        }
+    public void addToDatabase(Bus bus, int numBuses) {
+        String busNumber = "bus" + numBuses;
+        databaseReference.child("buses").child(uid).child(busNumber).setValue(bus);
     }
 
     public void goToHome(View view){
