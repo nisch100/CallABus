@@ -12,6 +12,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="58dp"
+        android:layout_marginLeft="58dp"
+        android:layout_marginRight="58dp"
         android:layout_marginStart="58dp"
         android:layout_marginTop="1dp"
         android:background="@null"
@@ -36,7 +38,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="76dp"
         android:background="#d4d4d4"
         android:clickable="false"
@@ -47,15 +51,16 @@
         android:padding="15dp"
         android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/time"
-        app:layout_constraintStart_toStartOf="@+id/pickup"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/time"
-        android:layout_width="152dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
         android:background="#d4d4d4"
         android:clickable="false"
         android:cursorVisible="false"
@@ -65,6 +70,7 @@
         android:padding="15dp"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/date"
         app:layout_constraintTop_toBottomOf="@+id/editText" />
 
     <Button
@@ -72,6 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
         android:background="#E7280E"
         android:text="Cancel"
         app:layout_constraintBottom_toBottomOf="@+id/continue2"
@@ -84,6 +91,7 @@
         android:layout_height="48dp"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="24dp"
         android:background="#25A642"
         android:text="Continue"
@@ -91,39 +99,38 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rtTime" />
 
-    <EditText
+    <Spinner
         android:id="@+id/pickup"
         android:layout_width="0dp"
-        android:layout_height="53dp"
-        android:layout_marginBottom="75dp"
-        android:layout_marginTop="76dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
         android:ems="10"
         android:hint="Full address of pick-up location"
         android:inputType="textPostalAddress"
-        app:layout_constraintBottom_toTopOf="@+id/promptRT"
         app:layout_constraintEnd_toEndOf="@+id/dropoff"
-        app:layout_constraintStart_toStartOf="@+id/dropoff"
-        app:layout_constraintTop_toTopOf="@+id/date" />
+        app:layout_constraintStart_toStartOf="@+id/textView20"
+        app:layout_constraintTop_toBottomOf="@+id/textView20"></Spinner>
 
-    <EditText
+    <Spinner
         android:id="@+id/dropoff"
         android:layout_width="276dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="216dp"
+        android:layout_marginTop="7dp"
         android:ems="10"
         android:hint="Full address of drop-off location"
         android:inputType="textPostalAddress"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/textView21"
+        app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
     <RadioGroup
         android:id="@+id/radioRT"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="20dp"
         android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/rtTime"
+        app:layout_constraintBottom_toBottomOf="@+id/rtTime"
         app:layout_constraintEnd_toEndOf="@+id/promptRT"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/promptRT">
@@ -145,8 +152,9 @@
         android:id="@+id/promptRT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="16dp"
         android:text="Round-trip?"
         android:textColor="#000000"
         android:textSize="20sp"
@@ -158,12 +166,38 @@
         android:layout_width="216dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="88dp"
+        android:layout_marginTop="87dp"
         android:layout_weight="1"
         android:enabled="false"
         android:text="round trip time selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dropoff" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="22dp"
+        android:text="Pickup Location"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="13dp"
+        android:text="Dropoff Location"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pickup" />
 
 
 </android.support.constraint.ConstraintLayout>

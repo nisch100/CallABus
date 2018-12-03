@@ -9,11 +9,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.content.Intent;
@@ -24,7 +26,8 @@ import java.util.Calendar;
 
 public class SchedulingActivity extends AppCompatActivity {
 
-    EditText date, time, pickUp, dropOff;
+    EditText date, time;
+    Spinner pickUp, dropOff;
     DatePickerDialog datePickerDialog;
     Button rtTimeButton, cont, mCancel;
     int cYear, cMonth, cDay;
@@ -47,26 +50,32 @@ public class SchedulingActivity extends AppCompatActivity {
 
 
         // Pick-up location text field
-        pickUp = (EditText) findViewById(R.id.pickup);
-        pickUp.setOnClickListener(new OnClickListener() {
+        pickUp = (Spinner) findViewById(R.id.pickup);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.places, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        pickUp.setAdapter(adapter);
+
+        /*pickUp.setOnItemClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(pickUp.getText().toString().equals("Full address of pick-up location")){
                     pickUp.getText().clear();
                 }
             }
-        });
+        });*/
 
         // Drop-off location text field
-        dropOff = (EditText) findViewById(R.id.dropoff);
-        dropOff.setOnClickListener(new OnClickListener() {
+        dropOff = (Spinner) findViewById(R.id.dropoff);
+        dropOff.setAdapter(adapter);
+        /*dropOff.setOnItemClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(dropOff.getText().toString().equals("Full address of drop-off location")){
                     dropOff.getText().clear();
                 }
             }
-        });
+        });*/
 
 
         // Cancel button
@@ -239,8 +248,8 @@ public class SchedulingActivity extends AppCompatActivity {
     }
 
     public void goToSchedReminders(View v){
-        String pickupLocation = pickUp.getText().toString().trim();
-        String dropoffLocation = dropOff.getText().toString().trim();
+        String pickupLocation = pickUp.getSelectedItem().toString().trim();
+        String dropoffLocation = dropOff.getSelectedItem().toString().trim();
 
         //check all fields filled out
         if(!errorCheck()){
@@ -309,11 +318,11 @@ public class SchedulingActivity extends AppCompatActivity {
             return false;
         }
 
-        if(pickUp.getText().toString().equals("") || pickUp.getText().toString().equals("Full address of pick-up location")){
+        if(pickUp.getSelectedItem().toString().equals("") || pickUp.getSelectedItem().toString().equals("Full address of pick-up location")){
             return false;
         }
 
-        if(dropOff.getText().toString().equals("") || dropOff.getText().toString().equals("Full address of drop-off location")){
+        if(dropOff.getSelectedItem().toString().equals("") || dropOff.getSelectedItem().toString().equals("Full address of drop-off location")){
             return false;
         }
 

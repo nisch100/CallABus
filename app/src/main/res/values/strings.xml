@@ -41,4 +41,11 @@
     <string name="rel1">rel1</string>
     <string name="rel2">rel2</string>
     <string name="rel3">rel3</string>
+    <string-array name="places">
+        <item>Long Branch Senior Center</item>
+        <item>Giant</item>
+        <item>Shoppes of Burnt Mills</item>
+        <item>Sligo Creek Park</item>
+    </string-array>
+
 </resources>
