@@ -38,13 +38,28 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
         SmsManager smsManager = SmsManager.getDefault();
         Log.i("here", "" + intent.getExtras().keySet().size());
         if (intent.getExtras().getString("rel1") != null) {
-            smsManager.sendTextMessage(intent.getExtras().getString("rel1"), null, "My bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " leaves in " + intent.getExtras().getString("time") + " minutes.", null, null);
+            if (!intent.getExtras().getString("time").equals("0")) {
+                smsManager.sendTextMessage(intent.getExtras().getString("rel1"), null, "My bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " leaves in " + intent.getExtras().getString("time") + " minutes.", null, null);
+            }
+            else {
+                smsManager.sendTextMessage(intent.getExtras().getString("rel1"), null, "My bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " has arrived.", null, null);
+            }
         }
         if (intent.getExtras().getString("rel2") != null) {
-            smsManager.sendTextMessage(intent.getExtras().getString("rel2"), null, "My bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " leaves in " + intent.getExtras().getString("time") + " minutes.", null, null);
+            if (!intent.getExtras().getString("time").equals("0")) {
+                smsManager.sendTextMessage(intent.getExtras().getString("rel2"), null, "My bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " leaves in " + intent.getExtras().getString("time") + " minutes.", null, null);
+            }
+            else {
+                smsManager.sendTextMessage(intent.getExtras().getString("rel2"), null, "My bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " has arrived.", null, null);
+            }
         }
         if (intent.getExtras().getString("rel3") != null) {
-            smsManager.sendTextMessage(intent.getExtras().getString("rel3"), null, "My bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " leaves in " + intent.getExtras().getString("time") + " minutes.", null, null);
+            if (!intent.getExtras().getString("time").equals("0")) {
+                smsManager.sendTextMessage(intent.getExtras().getString("rel3"), null, "My bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " leaves in " + intent.getExtras().getString("time") + " minutes.", null, null);
+            }
+            else {
+                smsManager.sendTextMessage(intent.getExtras().getString("rel3"), null, "My bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " has arrived.", null, null);
+            }
         }
 
     }
@@ -57,7 +72,12 @@ public class AlarmNotificationReceiver extends BroadcastReceiver {
                 NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 nm.createNotificationChannel(n);
                 Notification.Builder nb = new Notification.Builder(context, channelID);
-                nb.setContentText("Your bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " leaves in " + intent.getExtras().getString("time") + " minutes.");
+                if (!intent.getExtras().getString("time").equals("0")) {
+                    nb.setContentText("Your bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " leaves in " + intent.getExtras().getString("time") + " minutes.");
+                }
+                else {
+                    nb.setContentText("Your bus from " + intent.getExtras().getString("pickup") + " to " + intent.getExtras().getString("dropoff") + " has arrived.");
+                }
                 nb.setContentTitle("CallABus");
                 nb.setAutoCancel(true);
                 nb.setSmallIcon(R.drawable.ic_launcher_background);
