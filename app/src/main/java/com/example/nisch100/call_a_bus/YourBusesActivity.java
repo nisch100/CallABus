@@ -1,5 +1,7 @@
 package com.example.nisch100.call_a_bus;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,9 +21,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.nisch100.call_a_bus.dummy.PastBusesFragment;
-import com.example.nisch100.call_a_bus.dummy.UpcomingBusesFragment;
+import com.example.nisch100.call_a_bus.fragments.PastBusesFragment;
+import com.example.nisch100.call_a_bus.fragments.UpcomingBusesFragment;
+import com.google.firebase.auth.*;
+import com.google.firebase.database.*;
 
 public class YourBusesActivity extends AppCompatActivity {
 
@@ -39,11 +44,14 @@ public class YourBusesActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_your_buses);
+
+        mContext = this;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,17 +68,8 @@ public class YourBusesActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
+        Log.d("TAG", "started your buses");
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -114,9 +113,11 @@ public class YourBusesActivity extends AppCompatActivity {
         public static Fragment newInstance(int sectionNumber) {
             Fragment fragment;
             if (sectionNumber == 1) {
-                fragment = new PastBusesFragment();
+                // fragment = new PastBusesFragment();
+                fragment = PastBusesFragment.newInstance(null, null);
             } else {
-                fragment = new UpcomingBusesFragment();
+                // fragment = new UpcomingBusesFragment();
+                fragment = UpcomingBusesFragment.newInstance(null, null);
             }
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);

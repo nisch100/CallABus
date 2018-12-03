@@ -34,6 +34,8 @@ public class SchedulingActivity extends AppCompatActivity {
     RadioGroup rtGroup;
     RadioButton rtY, rtN;
     Boolean roundtrip;
+    int busID;
+    Bus bus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,19 @@ public class SchedulingActivity extends AppCompatActivity {
                 goToSchedReminders(view);
             }
         });
+
+
+        if (getIntent().hasExtra("bus")) {
+            bus = (Bus) getIntent().getExtras().getParcelable("bus");
+        } else {
+            bus = null;
+        }
+
+        if (getIntent().hasExtra("busID")) {
+            busID = getIntent().getExtras().getInt("busID");
+        } else {
+            busID = -1;
+        }
     }
 
     public void dateTimePickers() {
@@ -256,6 +271,8 @@ public class SchedulingActivity extends AppCompatActivity {
                 intent.putExtra("pickDest", pickupLocation);
                 intent.putExtra("dropDest", dropoffLocation);
                 intent.putExtra("roundtrip?", true);
+                intent.putExtra("bus", bus);
+                intent.putExtra("busID", busID);
 
                 startActivity(intent);
             }
@@ -271,6 +288,8 @@ public class SchedulingActivity extends AppCompatActivity {
             intent.putExtra("pickDest", pickupLocation);
             intent.putExtra("dropDest", dropoffLocation);
             intent.putExtra("roundtrip?", false);
+            intent.putExtra("bus", bus);
+            intent.putExtra("busID", busID);
 
             startActivity(intent);
         }
