@@ -226,13 +226,13 @@ public class RelativesInfo extends AppCompatActivity implements LoaderCallbacks<
     }
 
     public void switchAccountInfo(View view){
-        Intent intent = new Intent(getApplicationContext(), AccountInfo.class);
-        startActivity(intent);
+        // Intent intent = new Intent(getApplicationContext(), AccountInfo.class);
+        // startActivity(intent);
+        Utilities.switchScreen(getApplicationContext(), "AccountInfo");
     }
 
     public void switchMainMenu(View view){
-        Intent intent = new Intent(getApplicationContext(), MainMenu.class);
-        startActivity(intent);
+        Utilities.switchScreen(getApplicationContext(), "MainMenu");
     }
 
     private boolean isEmailValid(String email) {

@@ -60,6 +60,7 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
     private EditText mNameView;
     private EditText mPhoneView;
     private EditText mPasswordView;
+    private EditText mConfirmPasswordView;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -77,6 +78,7 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
         mNameView = (EditText) findViewById(R.id.user_name);
         mPhoneView = (EditText) findViewById(R.id.user_phone);
         mPasswordView = (EditText) findViewById(R.id.user_password);
+        mConfirmPasswordView = (EditText) findViewById(R.id.user_confirm_password);
 
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -138,6 +140,7 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
                 }
                 if (currentPassword.length() >= 1) {
                     mPasswordView.setText(currentPassword, TextView.BufferType.EDITABLE);
+                    mConfirmPasswordView.setText(currentPassword, TextView.BufferType.EDITABLE);
                 }
             }
             @Override
@@ -152,6 +155,7 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
         String mName = mNameView.getText().toString();
         String mPhone = mPhoneView.getText().toString();
         String mPassword = mPasswordView.getText().toString();
+        String mConfirmPassword = mConfirmPasswordView.getText().toString();
         // String mAddress = mAddressView.getText().toString();
 
         // DatabaseReference mUser = databaseReference.child(user.getUid());
@@ -169,24 +173,30 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
             Toast.makeText(getApplicationContext(), "All info need to be filled. Please don't leave any field empty", Toast.LENGTH_SHORT).show();
         }
         if(mPassword.length() >= 6) {
-            userReference.child("password").setValue(mPassword);
+            if(mPassword.equals(mConfirmPassword)){
+                userReference.child("password").setValue(mPassword);
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Passwords not matching", Toast.LENGTH_SHORT).show();
+            }
         }
         else{
             Toast.makeText(getApplicationContext(), "Password length minumum 6 characters", Toast.LENGTH_SHORT).show();
         }
+
 
         // toast a message "personal information is updated"
         Toast.makeText(getApplicationContext(), "account information is updated for: " + mName, Toast.LENGTH_SHORT).show();
     }
 
     public void switchRelativesInfo(View view){
-        Intent intent = new Intent(getApplicationContext(), RelativesInfo.class);
-        startActivity(intent);
+        // Intent intent = new Intent(getApplicationContext(), RelativesInfo.class);
+        // startActivity(intent);
+        Utilities.switchScreen(getApplicationContext(), "RelativesInfo");
     }
 
     public void switchMainMenu(View view){
-        Intent intent = new Intent(getApplicationContext(), MainMenu.class);
-        startActivity(intent);
+        Utilities.switchScreen(getApplicationContext(), "MainMenu");
     }
 
 

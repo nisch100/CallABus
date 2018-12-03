@@ -8,7 +8,7 @@ public class Utilities {
     // Switch to another screen
     static void switchScreen(Context current, String next){
         try{
-            Intent intent = new Intent(current, Class.forName(next));
+            Intent intent = new Intent(current, Class.forName("com.example.nisch100.call_a_bus." + next));
             current.startActivity(intent);
         }
         catch (ClassNotFoundException e) {
