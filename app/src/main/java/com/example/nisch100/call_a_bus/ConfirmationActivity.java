@@ -198,6 +198,8 @@ public class ConfirmationActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String rel1Name = (String) dataSnapshot.child("rel1").child("name").getValue();
                 String rel2Name = (String) dataSnapshot.child("rel2").child("name").getValue();
+                String rel3Name = (String) dataSnapshot.child("rel2").child("name").getValue();
+
                 for (int j = 0; j < relativeReminders.size(); j++) {
                     if (relativeReminders.get(j).equals(rel1Name)) {
                         String temp = String.valueOf(dataSnapshot.child("rel1").child("phone").getValue());
@@ -209,7 +211,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                         phoneNums.put("rel2", "+1" + temp);
                         ConfirmationActivity.this.rel2 = "+1" + temp;
                     }
-                    else {
+                    else if(relativeReminders.get(j).equals(rel3Name)){
                         String temp = String.valueOf(dataSnapshot.child("rel3").child("phone").getValue());
                         phoneNums.put("rel3", "+1" + temp);
                         ConfirmationActivity.this.rel3 = "+1" + temp;
