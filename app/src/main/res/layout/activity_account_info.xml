@@ -50,6 +50,8 @@
                 android:gravity="center"
                 android:text="Personal Information" />
 
+            <!-- Personal Information -->
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -62,7 +64,6 @@
                     android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
-
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -82,9 +83,13 @@
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="16dp"
                 android:text="Save Persoanl Info"
                 android:textStyle="bold" />
+
+
+            <!-- Reset Password -->
 
             <TextView
                 android:id="@+id/Reset_Password"
@@ -133,40 +138,24 @@
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
-            <!--
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/user_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_address"
-                    android:imeActionId="6"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textMultiLine"
-                    android:lines="4"
-                    android:maxLines="4"
-                    android:singleLine="false" />
-            </android.support.design.widget.TextInputLayout>
-            -->
-
-
             <Button
                 android:id="@+id/reset_password_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="16dp"
                 android:text="Reset Password"
                 android:textStyle="bold" />
+
 
 
             <Button
                 android:id="@+id/RelativesInfo_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="30dp"
                 android:text="Relatives Information Page"
                 android:onClick="switchRelativesInfo" />
 

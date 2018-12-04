@@ -152,51 +152,13 @@
             </android.support.design.widget.TextInputLayout>
 
 
-            <!--
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/relative_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
-                    android:imeActionId="6"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
-            -->
-
-
-            <!--
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/relative_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_address"
-                    android:imeActionId="6"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textMultiLine"
-                    android:lines="4"
-                    android:maxLines="4"
-                    android:singleLine="false" />
-            </android.support.design.widget.TextInputLayout>
-            -->
-
-
             <Button
                 android:id="@+id/email_sign_in_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="16dp"
                 android:text="Save Relative Info"
                 android:textStyle="bold" />
 
@@ -205,17 +167,10 @@
                 android:id="@+id/AccountInfo_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="30dp"
                 android:text="Account Information Page"
                 android:onClick="switchAccountInfo" />
-
-            <!--
-            <Button
-                android:id="@+id/MainMenu_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Main Menu"
-                android:onClick="switchMainMenu" />
-            -->
 
 
         </LinearLayout>
