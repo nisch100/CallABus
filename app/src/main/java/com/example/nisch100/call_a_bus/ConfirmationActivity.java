@@ -198,7 +198,7 @@ public class ConfirmationActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String rel1Name = (String) dataSnapshot.child("rel1").child("name").getValue();
                 String rel2Name = (String) dataSnapshot.child("rel2").child("name").getValue();
-                String rel3Name = (String) dataSnapshot.child("rel2").child("name").getValue();
+                String rel3Name = (String) dataSnapshot.child("rel3").child("name").getValue();
 
                 for (int j = 0; j < relativeReminders.size(); j++) {
                     if (relativeReminders.get(j).equals(rel1Name)) {

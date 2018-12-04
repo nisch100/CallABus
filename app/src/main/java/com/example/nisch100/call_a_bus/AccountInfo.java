@@ -102,6 +102,17 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
             }
         });
 
+        // Set button: reset password
+        Button mResetPasswordButton = (Button) findViewById(R.id.reset_password_button);
+        mSaveInfoButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // we are not doing login so ignore this function
+                // attemptLogin();
+                resetPassword();
+            }
+        });
+
         // Get database an user reference
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -156,24 +167,10 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
         return super.onOptionsItemSelected(item);
     }
 
-    // Method: save form to Firebase
-    private void saveInfo(){
-        // Store input text as strings
-        String mName = mNameView.getText().toString();
-        String mPhone = mPhoneView.getText().toString();
+    private void resetPassword(){
         String mCurrentPassword = mCurrentPasswordView.getText().toString();
         String mResetPassword = mResetPasswordView.getText().toString();
         String mConfirmPassword = mConfirmPasswordView.getText().toString();
-
-        // Check if inputs are valid. If so, save them to Firebase.
-        if(mName.length() >= 1 && mPhone.length() >= 1) {
-            userReference.child("name").setValue(mName);
-            userReference.child("phone").setValue(mPhone);
-        }
-        else{
-            Toast.makeText(getApplicationContext(), "Both name and phone need to be filled. Please don't leave any field empty", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         // Reset Password for user
         if(mResetPassword.length() >= 6) {
@@ -223,10 +220,6 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
                                 }
                             }
                         });
-
-                // userReference.child("password").setValue("TempPassword");
-                // userReference.child("password").setValue(mPassword);
-                // user.updatePassword(mPassword);
             }
             else{
                 Toast.makeText(getApplicationContext(), "Passwords not matching", Toast.LENGTH_SHORT).show();
@@ -238,6 +231,23 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
         }
         else{
             Toast.makeText(getApplicationContext(), "Password length minumum 6 characters", Toast.LENGTH_SHORT).show();
+            return;
+        }
+    }
+
+    // Method: save form to Firebase
+    private void saveInfo(){
+        // Store input text as strings
+        String mName = mNameView.getText().toString();
+        String mPhone = mPhoneView.getText().toString();
+
+        // Check if inputs are valid. If so, save them to Firebase.
+        if(mName.length() >= 1 && mPhone.length() >= 1) {
+            userReference.child("name").setValue(mName);
+            userReference.child("phone").setValue(mPhone);
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Both name and phone need to be filled. Please don't leave any field empty", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -318,7 +328,6 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
             emails.add(cursor.getString(ProfileQuery.ADDRESS));
             cursor.moveToNext();
         }
-
         addEmailsToAutoComplete(emails);
     }
 

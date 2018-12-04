@@ -41,82 +41,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!--
-            <android.support.design.widget.TextInputLayout
+
+            <TextView
+                android:id="@+id/Personal_information"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <AutoCompleteTextView
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
-
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_password"
-                    android:imeActionId="6"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
-
-            -->
-
-            <!--
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/user_gender"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="Gender" />
-                <RadioGroup
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <RadioButton android:id="@+id/radio_male"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="male"
-                        android:onClick="onRadioButtonClicked"/>
-                    <RadioButton android:id="@+id/radio_female"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="female"
-                        android:onClick="onRadioButtonClicked"/>
-                </RadioGroup>
-            </android.support.design.widget.TextInputLayout>
-
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/user_age"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Age"
-                    android:imeActionId="6"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="number"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
-            -->
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:text="Personal Information" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -144,6 +76,23 @@
                     android:maxLines="1"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/save_personal_info_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Save Persoanl Info"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/Reset_Password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:text="Reset Password" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -203,13 +152,14 @@
             </android.support.design.widget.TextInputLayout>
             -->
 
+
             <Button
-                android:id="@+id/save_personal_info_button"
+                android:id="@+id/reset_password_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Save Persoanl Info"
+                android:text="Reset Password"
                 android:textStyle="bold" />
 
 
