@@ -193,7 +193,7 @@ public class PastBusesFragment extends ListFragment {
                                     items.add(new ListItem(busDate, dropOffLocation));
                                 }
 
-                                fragment.setListAdapter(new CustomArrayAdapter(getActivity(), R.layout.list_item, items, buses, 1));
+                                fragment.setListAdapter(new CustomArrayAdapter(getActivity(), R.layout.list_item, items, buses, 0));
                             }
                         }
 
