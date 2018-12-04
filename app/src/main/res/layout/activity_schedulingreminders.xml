@@ -68,24 +68,24 @@
         android:id="@+id/other"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginLeft="41dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginStart="41dp"
         android:text="Other:"
-        app:layout_constraintEnd_toStartOf="@+id/minOther"
+        app:layout_constraintEnd_toStartOf="@+id/textView9"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/atArrival" />
 
     <EditText
         android:id="@+id/minOther"
         android:layout_width="41dp"
         android:layout_height="46dp"
-        android:layout_marginBottom="37dp"
-        android:layout_marginTop="32dp"
         android:inputType="number"
         android:textSize="14dp"
-        app:layout_constraintBottom_toBottomOf="@+id/relativePrompt"
-        app:layout_constraintEnd_toEndOf="@+id/relative1"
-        app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toEndOf="@+id/relative1"
-        app:layout_constraintTop_toTopOf="@+id/atArrival"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintBottom_toTopOf="@+id/textView9"
+        app:layout_constraintStart_toEndOf="@+id/other"
+        app:layout_constraintTop_toTopOf="@+id/textView9" />
 
     <TextView
         android:id="@+id/textView9"
@@ -95,7 +95,8 @@
         android:layout_marginTop="72dp"
         android:text="minutes before bus arrival"
         app:layout_constraintBottom_toTopOf="@+id/relative2"
-        app:layout_constraintStart_toEndOf="@+id/minOther"
+        app:layout_constraintEnd_toEndOf="@+id/editText"
+        app:layout_constraintStart_toEndOf="@+id/setReminders"
         app:layout_constraintTop_toTopOf="@+id/min10" />
 
 
@@ -106,18 +107,17 @@
         android:layout_marginTop="12dp"
         android:text="Choose relatives to be notified:"
         android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/textView9"
-        app:layout_constraintStart_toStartOf="@+id/textView9"
+        app:layout_constraintEnd_toEndOf="@+id/minOther"
+        app:layout_constraintStart_toEndOf="@+id/minOther"
         app:layout_constraintTop_toBottomOf="@+id/other" />
 
     <CheckBox
         android:id="@+id/relative1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="41dp"
-        android:layout_marginStart="41dp"
-        android:text="Relative1"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        app:layout_constraintStart_toStartOf="@+id/relativePrompt"
         app:layout_constraintTop_toBottomOf="@+id/relativePrompt" />
 
     <CheckBox
@@ -125,7 +125,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
-        android:text="Relative2"
         app:layout_constraintStart_toStartOf="@+id/relative1"
         app:layout_constraintTop_toBottomOf="@+id/relative1" />
 
@@ -133,7 +132,6 @@
         android:id="@+id/relative3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Relative3"
         app:layout_constraintStart_toStartOf="@+id/relative2"
         app:layout_constraintTop_toBottomOf="@+id/relative2" />
 

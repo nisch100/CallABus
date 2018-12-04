@@ -42,10 +42,13 @@
     <string name="rel2">rel2</string>
     <string name="rel3">rel3</string>
     <string-array name="places">
-        <item>Long Branch Senior Center</item>
-        <item>Giant</item>
-        <item>Shoppes of Burnt Mills</item>
-        <item>Sligo Creek Park</item>
+        <item>Meadow Lakes Senior Center</item>
+        <item>ShopRite</item>
+        <item>Freehold Mall</item>
+        <item>Mercer County Park</item>
+        <item>Patient First</item>
+        <item>United Methodist Church</item>
+        <item>BAPS Temple</item>
     </string-array>
 
 </resources>
