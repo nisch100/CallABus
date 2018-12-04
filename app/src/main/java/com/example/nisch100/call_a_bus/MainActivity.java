@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -42,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String id;
 
     ProgressDialog progressDialog;
-
 
     //defining firebaseauth object
     private FirebaseAuth firebaseAuth;
@@ -124,6 +132,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this,"Passwords don't match",Toast.LENGTH_LONG).show();
             return;
         }
+
+        /*
+        // Call method to hash the password
+        password = HashPassword.hashing(password);
+        if(password == null){
+            Log.e("spec", "password hashing failed");
+            return;
+        }
+        */
 
         Intent i = new Intent(this, AddRelatives.class);
         i.putExtra("email", email);

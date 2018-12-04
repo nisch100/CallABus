@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -120,6 +121,17 @@ public class AddRelatives extends AppCompatActivity {
                 progressDialog = new ProgressDialog(AddRelatives.this);
                 progressDialog.setMessage("Registering Please Wait...");
                 progressDialog.show();
+
+                // Hash the password
+                password = HashPassword.hashing(password);
+                if(password == null){
+                    Log.e("spec", "password hashing failed");
+                    return;
+                }
+                else{
+                    Log.i("spec", "password hashing at AddRelatives");
+                }
+
                 firebaseAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(AddRelatives.this, new OnCompleteListener<AuthResult>() {
                             @Override

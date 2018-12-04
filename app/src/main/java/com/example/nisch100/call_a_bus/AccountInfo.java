@@ -35,7 +35,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseError;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -62,10 +66,12 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
     private AutoCompleteTextView mEmailView;
     private EditText mNameView;
     private EditText mPhoneView;
-    private EditText mPasswordView;
+    private EditText mCurrentPasswordView;
+    private EditText mResetPasswordView;
     private EditText mConfirmPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    String mUserEmail;
 
     // Database related
     private DatabaseReference databaseReference;
@@ -81,7 +87,8 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
         // Load views
         mNameView = (EditText) findViewById(R.id.user_name);
         mPhoneView = (EditText) findViewById(R.id.user_phone);
-        mPasswordView = (EditText) findViewById(R.id.user_password);
+        mCurrentPasswordView = (EditText) findViewById(R.id.user_current_password);
+        mResetPasswordView = (EditText) findViewById(R.id.user_reset_password);
         mConfirmPasswordView = (EditText) findViewById(R.id.user_confirm_password);
 
         // Set button : save form
@@ -116,17 +123,13 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String currentName = (String) dataSnapshot.child("name").getValue();
                 String currentPhone = (String) dataSnapshot.child("phone").getValue();
-                String currentPassword = (String) dataSnapshot.child("password").getValue();
+                mUserEmail = (String) dataSnapshot.child("email").getValue();
                 // Toast.makeText(getApplicationContext(), "data snapshot get: " + currentName, Toast.LENGTH_SHORT).show();
                 if (currentName.length() >= 1) {
                     mNameView.setText(currentName, TextView.BufferType.EDITABLE);
                 }
                 if (currentPhone.length() >= 1) {
                     mPhoneView.setText(currentPhone, TextView.BufferType.EDITABLE);
-                }
-                if (currentPassword.length() >= 1) {
-                    mPasswordView.setText(currentPassword, TextView.BufferType.EDITABLE);
-                    mConfirmPasswordView.setText(currentPassword, TextView.BufferType.EDITABLE);
                 }
             }
             @Override
@@ -158,7 +161,8 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
         // Store input text as strings
         String mName = mNameView.getText().toString();
         String mPhone = mPhoneView.getText().toString();
-        String mPassword = mPasswordView.getText().toString();
+        String mCurrentPassword = mCurrentPasswordView.getText().toString();
+        String mResetPassword = mResetPasswordView.getText().toString();
         String mConfirmPassword = mConfirmPasswordView.getText().toString();
 
         // Check if inputs are valid. If so, save them to Firebase.
@@ -167,17 +171,70 @@ public class AccountInfo extends AppCompatActivity implements LoaderCallbacks<Cu
             userReference.child("phone").setValue(mPhone);
         }
         else{
-            Toast.makeText(getApplicationContext(), "All info need to be filled. Please don't leave any field empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Both name and phone need to be filled. Please don't leave any field empty", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(mPassword.length() >= 6) {
-            if(mPassword.equals(mConfirmPassword)){
-                userReference.child("password").setValue(mPassword);
+
+        // Reset Password for user
+        if(mResetPassword.length() >= 6) {
+
+            if(mCurrentPassword.length() == 0){
+                Toast.makeText(getApplicationContext(), "Current password is required to reset password", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(mResetPassword.equals(mConfirmPassword)){
+
+                // Call method to hash the password
+                mResetPassword = HashPassword.hashing(mResetPassword);
+                if(mResetPassword == null){
+                    Toast.makeText(getApplicationContext(), "Password Hashing Failed", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                mCurrentPassword = HashPassword.hashing(mCurrentPassword);
+                if(mCurrentPassword == null){
+                    Toast.makeText(getApplicationContext(), "Password Hashing Failed", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                AuthCredential credential = EmailAuthProvider
+                        .getCredential(mUserEmail, mCurrentPassword);
+
+                final String newPassword = mResetPassword;
+
+                user.reauthenticate(credential)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(getApplicationContext(), "Password Updated", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(getApplicationContext(), "Password Update Failed", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    Log.d(TAG, "Error auth failed");
+                                }
+                            }
+                        });
+
+                // userReference.child("password").setValue("TempPassword");
+                // userReference.child("password").setValue(mPassword);
+                // user.updatePassword(mPassword);
             }
             else{
                 Toast.makeText(getApplicationContext(), "Passwords not matching", Toast.LENGTH_SHORT).show();
                 return;
             }
+        }
+        else if(mResetPassword.length() == 0){
+            // do nothing since users are not required to reset their password;
         }
         else{
             Toast.makeText(getApplicationContext(), "Password length minumum 6 characters", Toast.LENGTH_SHORT).show();

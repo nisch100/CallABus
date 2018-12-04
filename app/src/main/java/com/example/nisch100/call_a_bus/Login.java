@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -87,6 +88,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         progressDialog.setMessage("Logging in...");
         progressDialog.show();
 
+        // Hash the password
+        password = HashPassword.hashing(password);
+        if(password == null){
+            Log.e("spec", "password hashing failed");
+            return;
+        }
+        else{
+            Log.i("spec", "password hashing at Login");
+        }
+
         //logging in the user
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -98,6 +109,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             //start the profile activity
                             finish();
                             startActivity(new Intent(getApplicationContext(), MainMenu.class));
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "Invalid email or password", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

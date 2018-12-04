@@ -51,7 +51,7 @@ public class MainMenu extends AppCompatActivity {
         account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(view.getContext(), RelativesInfo.class));
+                startActivity(new Intent(view.getContext(), AccountInfo.class));
             }
         });
 
