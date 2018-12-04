@@ -21,6 +21,8 @@ import android.widget.Toast;
 import android.content.Intent;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 
@@ -33,6 +35,7 @@ public class SchedulingActivity extends AppCompatActivity {
     int cYear, cMonth, cDay;
     String AM_PM;
     int cHour, cMin, rtHour, rtMin;
+    String pickupLocation, dropoffLocation;
 
     RadioGroup rtGroup;
     RadioButton rtY, rtN;
@@ -100,6 +103,7 @@ public class SchedulingActivity extends AppCompatActivity {
 
         if (getIntent().hasExtra("bus")) {
             bus = (Bus) getIntent().getExtras().getParcelable("bus");
+            populateFields();
         } else {
             bus = null;
         }
@@ -248,8 +252,8 @@ public class SchedulingActivity extends AppCompatActivity {
     }
 
     public void goToSchedReminders(View v){
-        String pickupLocation = pickUp.getSelectedItem().toString().trim();
-        String dropoffLocation = dropOff.getSelectedItem().toString().trim();
+        pickupLocation = pickUp.getSelectedItem().toString().trim();
+        dropoffLocation = dropOff.getSelectedItem().toString().trim();
 
         //check all fields filled out
         if(!errorCheck()){
@@ -265,7 +269,7 @@ public class SchedulingActivity extends AppCompatActivity {
 
         // error check for RT trip time
         if(rtY.isChecked()){
-            if(cHour > rtHour || (cHour == rtHour && cMin >= rtMin)) {
+            if((cHour > rtHour || (cHour == rtHour && cMin >= rtMin)) && bus == null) {
                 errorTime(v);
                 return;
             } else {
@@ -416,5 +420,50 @@ public class SchedulingActivity extends AppCompatActivity {
                 .show();
         return;
     }
+
+    private void populateFields() {
+        int rtHr, rtMin;
+        ArrayList<String> locations;
+
+        locations = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.places)));
+
+        cYear = bus.year;
+        cMonth = bus.month;
+        cDay = bus.day;
+        AM_PM = bus.initialAmPm;
+        cHour = bus.initialHour;
+        cMin = bus.initialMinute;
+        rtHour = bus.roundTripHour;
+        rtMin = bus.roundTripMin;
+        pickupLocation = bus.pickUpLocation;
+        dropoffLocation = bus.dropOffLocation;
+
+        date.setText((bus.month) + "/"  + bus.day + "/" + bus.year);
+
+        if(bus.initialMinute < 10){
+            time.setText(bus.initialHour + ":0" + bus.initialMinute + bus.initialAmPm);
+        } else {
+            time.setText(bus.initialHour + ":" + bus.initialMinute + bus.initialAmPm);
+        }
+
+        pickUp.setSelection(locations.indexOf(bus.pickUpLocation));
+        dropOff.setSelection(locations.indexOf(bus.dropOffLocation));
+
+        if(bus.roundTrip) {
+            // enable button
+            rtY.setChecked(true);
+            rtHr = bus.roundTripHour;
+            rtMin = bus.roundTripMin;
+
+            if(bus.roundTripMin < 10){
+                rtTimeButton.setText(rtHr + ":0" + rtMin + bus.rtAmPm);
+            } else {
+                rtTimeButton.setText(rtHr + ":" + rtMin + bus.rtAmPm);
+            }
+        } else {
+            rtN.setChecked(true);
+        }
+    }
+
 
 }
